@@ -1,0 +1,10 @@
+{
+  "name": "google-docs-converter",
+  "version": "0.1.0",
+  "description": "Tool to convert from Google Docs JSON to Org Mode and Markdown formats.",
+  "main": "index.js",
+  "repository": "https://github.com/SimonGZ/google-docs-converter",
+  "author": "Simon Ganz",
+  "license": "MIT",
+  "private": true
+}
