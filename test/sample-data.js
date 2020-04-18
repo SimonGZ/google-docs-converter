@@ -186,3 +186,103 @@ const heading1 = {
 };
 
 exports.heading1 = heading1;
+
+const heading2 = {
+  'elements': [
+    {
+      'startIndex': 3905,
+      'endIndex': 3915,
+      'textRun': {
+        'content': 'The Story\n',
+        'textStyle': {},
+      },
+    },
+  ],
+  'paragraphStyle': {
+    'headingId': 'h.gbboezabcj4r',
+    'namedStyleType': 'HEADING_2',
+    'direction': 'LEFT_TO_RIGHT',
+  },
+};
+
+exports.heading2 = heading2;
+
+const heading3 = {
+  'elements': [
+    {
+      'startIndex': 3905,
+      'endIndex': 3915,
+      'textRun': {
+        'content': 'The Story\n',
+        'textStyle': {},
+      },
+    },
+  ],
+  'paragraphStyle': {
+    'headingId': 'h.gbboezabcj4r',
+    'namedStyleType': 'HEADING_3',
+    'direction': 'LEFT_TO_RIGHT',
+  },
+};
+
+exports.heading3 = heading3;
+
+const heading4 = {
+  'elements': [
+    {
+      'startIndex': 3905,
+      'endIndex': 3915,
+      'textRun': {
+        'content': 'The Story\n',
+        'textStyle': {},
+      },
+    },
+  ],
+  'paragraphStyle': {
+    'headingId': 'h.gbboezabcj4r',
+    'namedStyleType': 'HEADING_4',
+    'direction': 'LEFT_TO_RIGHT',
+  },
+};
+
+exports.heading4 = heading4;
+
+const heading5 = {
+  'elements': [
+    {
+      'startIndex': 3905,
+      'endIndex': 3915,
+      'textRun': {
+        'content': 'The Story\n',
+        'textStyle': {},
+      },
+    },
+  ],
+  'paragraphStyle': {
+    'headingId': 'h.gbboezabcj4r',
+    'namedStyleType': 'HEADING_5',
+    'direction': 'LEFT_TO_RIGHT',
+  },
+};
+
+exports.heading5 = heading5;
+
+const heading6 = {
+  'elements': [
+    {
+      'startIndex': 3905,
+      'endIndex': 3915,
+      'textRun': {
+        'content': 'The Story\n',
+        'textStyle': {},
+      },
+    },
+  ],
+  'paragraphStyle': {
+    'headingId': 'h.gbboezabcj4r',
+    'namedStyleType': 'HEADING_6',
+    'direction': 'LEFT_TO_RIGHT',
+  },
+};
+
+exports.heading6 = heading6;

@@ -27,8 +27,13 @@ describe('#parseParagraph', function() {
       });
     });
     describe('headings', function() {
-      it('should convert heading1', function() {
+      it('should convert headings', function() {
         assert.equal(parseParagraph(sample.heading1, markdownWriter), '# The Story\n');
+        assert.equal(parseParagraph(sample.heading2, markdownWriter), '## The Story\n');
+        assert.equal(parseParagraph(sample.heading3, markdownWriter), '### The Story\n');
+        assert.equal(parseParagraph(sample.heading4, markdownWriter), '#### The Story\n');
+        assert.equal(parseParagraph(sample.heading5, markdownWriter), '##### The Story\n');
+        assert.equal(parseParagraph(sample.heading6, markdownWriter), '###### The Story\n');
       });
     });
   });
