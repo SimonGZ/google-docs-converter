@@ -18,5 +18,11 @@ describe('#parseParagraph', function() {
     it('should return markdown bold', function() {
       assert.equal(parseParagraph(sample.boldText, markdownWriter), 'So let’s talk about that young woman. **When We Were Vikings** is unique\n');
     });
+    it('should return markdown underline', function() {
+      assert.equal(parseParagraph(sample.underlineText, markdownWriter), 'So let’s talk about that young woman. <u>When We Were Vikings</u> is unique\n');
+    });
+    it('should return markdown strikethrough', function() {
+      assert.equal(parseParagraph(sample.strikethroughText, markdownWriter), 'So let’s talk about that young woman. <s>When We Were Vikings</s> is unique\n');
+    });
   });
 });

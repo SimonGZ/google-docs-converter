@@ -8,6 +8,8 @@ program.parse(process.argv);
 interface Writer {
   bold(content: any): string;
   italicize(text: string): string;
+  underline(text: string): string;
+  strikethrough(text: string): string;
 }
 
 /** Class implementing markdown Writer */
@@ -27,6 +29,22 @@ class MarkdownWriter implements Writer {
    */
   bold(text: string): string {
     return '**' + text + '**';
+  }
+  /**
+   * Wrap underline text with <u> tags
+   * @param {string} text
+   * @return {string}
+   */
+  underline(text: string): string {
+    return '<u>' + text + '</u>';
+  }
+  /**
+   * Wrap strikethrough text with <s> tags
+   * @param {string} text
+   * @return {string}
+   */
+  strikethrough(text: string): string {
+    return '<s>' + text + '</s>';
   }
 }
 exports.MarkdownWriter = MarkdownWriter;
@@ -65,6 +83,15 @@ function parseElement(element: object, writer: Writer): string {
   const textStyle = element['textRun']['textStyle'];
   if (util.isEmpty(textStyle)) {
     return content;
+  }
+
+  /* Note, the order of these conditionals matters.
+   * HTML tags on outside of markdown. */
+  if (textStyle.underline) {
+    content = writer.underline(content);
+  }
+  if (textStyle.strikethrough) {
+    content = writer.strikethrough(content);
   }
   if (textStyle.italic) {
     content = writer.italicize(content);

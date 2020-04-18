@@ -92,3 +92,77 @@ const boldText = {
 };
 
 exports.boldText = boldText;
+
+const underlineText = {
+  'elements': [
+    {
+      'startIndex': 1354,
+      'endIndex': 1392,
+      'textRun': {
+        'content': 'So let’s talk about that young woman. ',
+        'textStyle': {},
+      },
+    },
+    {
+      'startIndex': 1392,
+      'endIndex': 1412,
+      'textRun': {
+        'content': 'When We Were Vikings',
+        'textStyle': {
+          'underline': true,
+        },
+      },
+    },
+    {
+      'startIndex': 1412,
+      'endIndex': 1595,
+      'textRun': {
+        'content': ' is unique\n',
+        'textStyle': {},
+      },
+    },
+  ],
+  'paragraphStyle': {
+    'namedStyleType': 'NORMAL_TEXT',
+    'direction': 'LEFT_TO_RIGHT',
+  },
+};
+
+exports.underlineText = underlineText;
+
+const strikethroughText = {
+  'elements': [
+    {
+      'startIndex': 1354,
+      'endIndex': 1392,
+      'textRun': {
+        'content': 'So let’s talk about that young woman. ',
+        'textStyle': {},
+      },
+    },
+    {
+      'startIndex': 1392,
+      'endIndex': 1412,
+      'textRun': {
+        'content': 'When We Were Vikings',
+        'textStyle': {
+          'strikethrough': true,
+        },
+      },
+    },
+    {
+      'startIndex': 1412,
+      'endIndex': 1595,
+      'textRun': {
+        'content': ' is unique\n',
+        'textStyle': {},
+      },
+    },
+  ],
+  'paragraphStyle': {
+    'namedStyleType': 'NORMAL_TEXT',
+    'direction': 'LEFT_TO_RIGHT',
+  },
+};
+
+exports.strikethroughText = strikethroughText;
