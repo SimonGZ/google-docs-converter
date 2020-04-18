@@ -1,6 +1,10 @@
 # Generated files
 index.js
 utilities.js
+*.js.map
+
+# Development files
+viking-pitch.json
 
 # Logs
 logs
