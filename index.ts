@@ -1,8 +1,13 @@
 const {program} = require('commander');
+const fs = require('fs');
 const pjson = require('./package.json');
 const util = require('./utilities');
 
 program.version(pjson.version);
+
+program
+    .option('-j, --json <jsonFile>', 'pass Google Docs JSON as file');
+
 program.parse(process.argv);
 
 interface Writer {
@@ -58,6 +63,33 @@ class MarkdownWriter implements Writer {
   }
 }
 exports.MarkdownWriter = MarkdownWriter;
+
+if (program.json) {
+  console.log(program.json);
+  const rawData = fs.readFileSync(program.json);
+  const json = JSON.parse(rawData);
+  console.log(parseDocument(json));
+}
+
+/**
+ * Function to parse Google Docs API Document
+ * @param {object} document JSON object representing document
+ * @param {Writer} writer Converter to appropriate text format
+ * @return {string}
+ */
+function parseDocument(
+    document: object,
+    writer: Writer = new MarkdownWriter(),
+): string {
+  const body: object = document['body'];
+  const content: object[] = body['content'];
+  const paragraphs: object[] = content
+      .filter((o) => o.hasOwnProperty('paragraph'))
+      .map((o) => o['paragraph']);
+
+  const parsed = paragraphs.map((p) => parseParagraph(p, writer));
+  return parsed.join('');
+}
 
 /** Function to parse paragraph element and convert to Markdown
  * @param  {object} paragraph From 'paragraph' field
