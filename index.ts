@@ -6,6 +6,7 @@ program.version(pjson.version);
 program.parse(process.argv);
 
 interface Writer {
+  bold(content: any): string;
   italicize(text: string): string;
 }
 
@@ -18,6 +19,14 @@ class MarkdownWriter implements Writer {
    */
   italicize(text: string): string {
     return '*' + text + '*';
+  }
+  /**
+   * Wrap bold text with 2 asterisks
+   * @param {string} text
+   * @return {string}
+   */
+  bold(text: string): string {
+    return '**' + text + '**';
   }
 }
 exports.MarkdownWriter = MarkdownWriter;
@@ -54,13 +63,17 @@ exports.parseParagraph = parseParagraph;
  * @return {string}
  */
 function parseElement(element: object, writer: Writer): string {
-  const content = element['textRun']['content'];
+  let content = element['textRun']['content'];
   const textStyle = element['textRun']['textStyle'];
   if (util.isEmpty(textStyle)) {
     return content;
-  } else if (textStyle.italic) {
-    return writer.italicize(content);
   }
+  if (textStyle.italic) {
+    content = writer.italicize(content);
+  }
+  if (textStyle.bold) {
+    content = writer.bold(content);
+  }
+  return content;
 }
 
-//

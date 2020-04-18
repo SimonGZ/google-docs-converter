@@ -15,5 +15,8 @@ describe('#parseParagraph', function() {
     it('should return markdown italics', function() {
       assert.equal(parseParagraph(sample.italicText, markdownWriter), 'So let’s talk about that young woman. *When We Were Vikings* is unique\n');
     });
+    it('should return markdown bold', function() {
+      assert.equal(parseParagraph(sample.boldText, markdownWriter), 'So let’s talk about that young woman. **When We Were Vikings** is unique\n');
+    });
   });
 });
