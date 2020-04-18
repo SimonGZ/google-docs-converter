@@ -31,8 +31,6 @@ class MarkdownWriter implements Writer {
 }
 exports.MarkdownWriter = MarkdownWriter;
 
-const markdownWriter: Writer = new MarkdownWriter();
-
 /** Function to parse paragraph element and convert to Markdown
  * @param  {object} paragraph From 'paragraph' field
  * @param  {Writer} writer class to handle conversions, default is markdown
@@ -40,7 +38,7 @@ const markdownWriter: Writer = new MarkdownWriter();
  */
 function parseParagraph(
     paragraph: object,
-    writer: Writer = markdownWriter,
+    writer: Writer = new MarkdownWriter(),
 ): string {
   const elements : object[] = paragraph['elements'];
   /** Function to reduce elements/textRuns into single string
