@@ -12,17 +12,24 @@ describe('#parseParagraph', function() {
   });
 
   describe('with markdown writer', function() {
-    it('should return markdown italics', function() {
-      assert.equal(parseParagraph(sample.italicText, markdownWriter), 'So let’s talk about that young woman. *When We Were Vikings* is unique\n');
+    describe('text styling', function() {
+      it('should return markdown italics', function() {
+        assert.equal(parseParagraph(sample.italicText, markdownWriter), 'So let’s talk about that young woman. *When We Were Vikings* is unique\n');
+      });
+      it('should return markdown bold', function() {
+        assert.equal(parseParagraph(sample.boldText, markdownWriter), 'So let’s talk about that young woman. **When We Were Vikings** is unique\n');
+      });
+      it('should return markdown underline', function() {
+        assert.equal(parseParagraph(sample.underlineText, markdownWriter), 'So let’s talk about that young woman. <u>When We Were Vikings</u> is unique\n');
+      });
+      it('should return markdown strikethrough', function() {
+        assert.equal(parseParagraph(sample.strikethroughText, markdownWriter), 'So let’s talk about that young woman. <s>When We Were Vikings</s> is unique\n');
+      });
     });
-    it('should return markdown bold', function() {
-      assert.equal(parseParagraph(sample.boldText, markdownWriter), 'So let’s talk about that young woman. **When We Were Vikings** is unique\n');
-    });
-    it('should return markdown underline', function() {
-      assert.equal(parseParagraph(sample.underlineText, markdownWriter), 'So let’s talk about that young woman. <u>When We Were Vikings</u> is unique\n');
-    });
-    it('should return markdown strikethrough', function() {
-      assert.equal(parseParagraph(sample.strikethroughText, markdownWriter), 'So let’s talk about that young woman. <s>When We Were Vikings</s> is unique\n');
+    describe('headings', function() {
+      it('should convert heading1', function() {
+        assert.equal(parseParagraph(sample.heading1, markdownWriter), '# The Story\n');
+      });
     });
   });
 });

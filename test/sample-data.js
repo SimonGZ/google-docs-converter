@@ -166,3 +166,23 @@ const strikethroughText = {
 };
 
 exports.strikethroughText = strikethroughText;
+
+const heading1 = {
+  'elements': [
+    {
+      'startIndex': 3905,
+      'endIndex': 3915,
+      'textRun': {
+        'content': 'The Story\n',
+        'textStyle': {},
+      },
+    },
+  ],
+  'paragraphStyle': {
+    'headingId': 'h.gbboezabcj4r',
+    'namedStyleType': 'HEADING_1',
+    'direction': 'LEFT_TO_RIGHT',
+  },
+};
+
+exports.heading1 = heading1;

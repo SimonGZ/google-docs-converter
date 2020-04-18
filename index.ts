@@ -10,6 +10,7 @@ interface Writer {
   italicize(text: string): string;
   underline(text: string): string;
   strikethrough(text: string): string;
+  addHeading(text: string, level: number): string;
 }
 
 /** Class implementing markdown Writer */
@@ -46,6 +47,15 @@ class MarkdownWriter implements Writer {
   strikethrough(text: string): string {
     return '<s>' + text + '</s>';
   }
+  /**
+   * Add ATX-style header to text
+   * @param {string} text to add header to
+   * @param {number} level of ATX-heading to apply
+   * @return {string}
+   */
+  addHeading(text: string, level: number): string {
+    return '#'.repeat(level) + ' ' + text;
+  }
 }
 exports.MarkdownWriter = MarkdownWriter;
 
@@ -67,7 +77,18 @@ function parseParagraph(
   function elementsReducer(acc: string, element: object): string {
     return acc + parseElement(element, writer);
   }
-  const content = elements.reduce(elementsReducer, '');
+  let content = elements.reduce(elementsReducer, '');
+
+  // Handle Headers
+  const paragraphStyle = paragraph['paragraphStyle'];
+  const namedStyle: string = paragraphStyle['namedStyleType'];
+
+  if (namedStyle.startsWith('HEADING')) {
+    const levelString: string = namedStyle.substring(namedStyle.length - 1);
+    const level: number = parseInt(levelString);
+    content = writer.addHeading(content, level);
+  }
+
   return content;
 }
 
