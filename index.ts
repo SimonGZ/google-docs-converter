@@ -99,7 +99,9 @@ class MarkdownWriter implements Writer {
         }
       }
     }
-    return lines.join('');
+    const joinedText = lines.join('');
+    const cleanedText = joinedText.replace('\u000b', '');
+    return cleanedText;
   }
 }
 exports.MarkdownWriter = MarkdownWriter;

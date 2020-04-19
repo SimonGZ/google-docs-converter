@@ -45,5 +45,8 @@ describe('#parseDcoument', function() {
       assert.equal(parseDocument(sample.headingPadding, markdownWriter), 'She wants to lose her virginity to Marxy. \n\n## Routine\n\nShe brushes her teeth at exactly the same time every day. \n');
       assert.equal(parseDocument(sample.headingPaddingPileUp, markdownWriter), '# Big Heading\n\n## Smaller Heading\n\nShe brushes her teeth at exactly the same time every day. \n');
     });
+    it('strips problematic unicode', function() {
+      assert.equal(parseDocument(sample.unicodeTab, markdownWriter), 'When Zelda announces herself...\n');
+    });
   });
 });

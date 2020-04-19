@@ -426,3 +426,32 @@ const headingPaddingPileUp = {
 };
 
 exports.headingPaddingPileUp = headingPaddingPileUp;
+
+const unicodeTab = {
+  'body': {
+    'content': [{
+      'startIndex': 16686,
+      'endIndex': 17188,
+      'paragraph': {
+        'elements': [
+          {
+            'startIndex': 16686,
+            'endIndex': 17188,
+            'textRun': {
+              'content': '\u000bWhen Zelda announces herself...\n',
+              'textStyle': {},
+              'textStyle': {},
+            },
+          },
+        ],
+        'paragraphStyle': {
+          'namedStyleType': 'NORMAL_TEXT',
+          'direction': 'LEFT_TO_RIGHT',
+        },
+      },
+    },
+    ],
+  },
+};
+
+exports.unicodeTab = unicodeTab;
