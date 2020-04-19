@@ -356,3 +356,73 @@ const headingPadding = {
 };
 
 exports.headingPadding = headingPadding;
+
+const headingPaddingPileUp = {
+  'body': {
+    'content': [
+      {
+        'startIndex': 7293,
+        'endIndex': 7510,
+        'paragraph': {
+          'elements': [
+            {
+              'startIndex': 7293,
+              'endIndex': 7510,
+              'textRun': {
+                'content': 'Big Heading\n',
+                'textStyle': {},
+              },
+            },
+          ],
+          'paragraphStyle': {
+            'namedStyleType': 'HEADING_1',
+            'direction': 'LEFT_TO_RIGHT',
+          },
+        },
+      },
+      {
+        'startIndex': 7510,
+        'endIndex': 7518,
+        'paragraph': {
+          'elements': [
+            {
+              'startIndex': 7510,
+              'endIndex': 7518,
+              'textRun': {
+                'content': 'Smaller Heading\n',
+                'textStyle': {},
+              },
+            },
+          ],
+          'paragraphStyle': {
+            'headingId': 'h.3rfuuswvyogr',
+            'namedStyleType': 'HEADING_2',
+            'direction': 'LEFT_TO_RIGHT',
+          },
+        },
+      },
+      {
+        'startIndex': 7518,
+        'endIndex': 7890,
+        'paragraph': {
+          'elements': [
+            {
+              'startIndex': 7518,
+              'endIndex': 7890,
+              'textRun': {
+                'content': 'She brushes her teeth at exactly the same time every day. \n',
+                'textStyle': {},
+              },
+            },
+          ],
+          'paragraphStyle': {
+            'namedStyleType': 'NORMAL_TEXT',
+            'direction': 'LEFT_TO_RIGHT',
+          },
+        },
+      },
+    ],
+  },
+};
+
+exports.headingPaddingPileUp = headingPaddingPileUp;

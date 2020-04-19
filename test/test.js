@@ -43,6 +43,7 @@ describe('#parseDcoument', function() {
   describe('with markdown writer', function() {
     it('should nicely pad headings', function() {
       assert.equal(parseDocument(sample.headingPadding, markdownWriter), 'She wants to lose her virginity to Marxy. \n\n## Routine\n\nShe brushes her teeth at exactly the same time every day. \n');
+      assert.equal(parseDocument(sample.headingPaddingPileUp, markdownWriter), '# Big Heading\n\n## Smaller Heading\n\nShe brushes her teeth at exactly the same time every day. \n');
     });
   });
 });

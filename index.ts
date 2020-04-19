@@ -83,7 +83,7 @@ class MarkdownWriter implements Writer {
         const prev: string = lines[i-1];
         const next: string = lines[i+1];
         if (l.startsWith('#')) {
-          if (!prev.startsWith('\n')) {
+          if (!prev.startsWith('\n') && !prev.endsWith('\n\n')) {
             l = '\n' + l;
             lines[i] = l;
           }
