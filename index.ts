@@ -6,7 +6,10 @@ const util = require('./utilities');
 program.version(pjson.version);
 
 program
-    .option('-j, --json <jsonFile>', 'pass Google Docs JSON as file');
+    .option('-f, --format <format>',
+        'Format for conversion: markdown, loose-markdown, fountain, org.',
+        'loose-markdown')
+    .option('-j, --json <jsonFile>', 'Pass Google Docs JSON as file');
 
 program.parse(process.argv);
 
@@ -100,16 +103,51 @@ class MarkdownWriter implements Writer {
       }
     }
     const joinedText = lines.join('');
-    const cleanedText = joinedText.replace('\u000b', '');
+    const cleanedText = joinedText.replace('\u000b', '\n');
     return cleanedText;
   }
 }
 exports.MarkdownWriter = MarkdownWriter;
 
+/**
+ * Class to convert markdown without html tags
+ */
+class LooseMarkdownWriter extends MarkdownWriter {
+  /**
+   * strikethrough -- Overwriting inherited method
+   * @param {string} text Text to process
+   * @return {string}
+   */
+  strikethrough(text: string):string {
+    return text;
+  }
+  /**
+   * underline -- Overwriting inherited method
+   * @param {string} text Text to process
+   * @return {string}
+   */
+  underline(text: string): string {
+    return text;
+  }
+}
+
+const inputtedFormat: string = program.format;
+let writer: Writer;
+switch (inputtedFormat.toLowerCase()) {
+  case 'markdown':
+    writer = new MarkdownWriter();
+    break;
+  case 'loose-markdown':
+    writer = new LooseMarkdownWriter();
+    break;
+  default:
+    writer = new LooseMarkdownWriter();
+}
+
 if (program.json) {
   const rawData = fs.readFileSync(program.json);
   const json = JSON.parse(rawData);
-  console.log(parseDocument(json));
+  console.log(parseDocument(json, writer));
 }
 
 /**
