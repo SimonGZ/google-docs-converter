@@ -92,6 +92,11 @@ class MarkdownWriter implements Writer {
             lines[i] = l;
           }
         }
+      } else if (i > zero && i == max) { // Handle header on last line
+        const prev: string = lines[i-1];
+        if (l.startsWith('#') && (!prev.endsWith('\n\n') || prev == '\n')) {
+          lines[i] = '\n' + l;
+        }
       }
     }
     return lines.join('');
