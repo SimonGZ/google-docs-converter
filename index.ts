@@ -123,11 +123,11 @@ class LooseMarkdownWriter extends MarkdownWriter {
   }
   /**
    * underline -- Overwriting inherited method
-   * @param {string} text Text to process
+   * @param {string} text Text to star
    * @return {string}
    */
   underline(text: string): string {
-    return text;
+    return '*' + text + '*';
   }
 }
 
