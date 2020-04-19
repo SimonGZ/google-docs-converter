@@ -3,7 +3,7 @@
 const assert = require('assert');
 const sample = require('./sample-data.js');
 
-const {parseParagraph, MarkdownWriter} = require('../index.js');
+const {parseParagraph, parseDocument, MarkdownWriter} = require('../index.js');
 const markdownWriter = new MarkdownWriter();
 
 describe('#parseParagraph', function() {
@@ -35,6 +35,14 @@ describe('#parseParagraph', function() {
         assert.equal(parseParagraph(sample.heading5, markdownWriter), '##### The Story\n');
         assert.equal(parseParagraph(sample.heading6, markdownWriter), '###### The Story\n');
       });
+    });
+  });
+});
+
+describe('#parseDcoument', function() {
+  describe('with markdown writer', function() {
+    it('should nicely pad headings', function() {
+      assert.equal(parseDocument(sample.headingPadding, markdownWriter), 'She wants to lose her virginity to Marxy. \n\n## Routine\n\nShe brushes her teeth at exactly the same time every day. \n');
     });
   });
 });

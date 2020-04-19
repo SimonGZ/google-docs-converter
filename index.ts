@@ -16,6 +16,7 @@ interface Writer {
   underline(text: string): string;
   strikethrough(text: string): string;
   addHeading(text: string, level: number): string;
+  finalize(lines: string[]): string;
 }
 
 /** Class implementing markdown Writer */
@@ -61,11 +62,43 @@ class MarkdownWriter implements Writer {
   addHeading(text: string, level: number): string {
     return '#'.repeat(level) + ' ' + text;
   }
+  /**
+   * Do final pass on array of markdown elements
+   * In particular: Properly pad headings
+   * @param {string[]} lines
+   * @return {string}
+   */
+  finalize(lines: string[]): string {
+    const zero = 0;
+    const max = lines.length - 1;
+    for (let [i, l] of lines.entries()) {
+      if (i == 0 && i+1 <= max) {
+        const next = lines[i+1];
+        if (l.startsWith('#') && !next.startsWith('\n')) {
+          l += '\n';
+          lines[i] = l;
+        }
+      } else if (i > zero && i < max) {
+        const prev = lines[i-1];
+        const next = lines[i+1];
+        if (l.startsWith('#')) {
+          if (!prev.startsWith('\n')) {
+            l = '\n' + l;
+            lines[i] = l;
+          }
+          if (!next.startsWith('\n')) {
+            l += '\n';
+            lines[i] = l;
+          }
+        }
+      }
+    }
+    return lines.join('');
+  }
 }
 exports.MarkdownWriter = MarkdownWriter;
 
 if (program.json) {
-  console.log(program.json);
   const rawData = fs.readFileSync(program.json);
   const json = JSON.parse(rawData);
   console.log(parseDocument(json));
@@ -87,9 +120,12 @@ function parseDocument(
       .filter((o) => o.hasOwnProperty('paragraph'))
       .map((o) => o['paragraph']);
 
-  const parsed = paragraphs.map((p) => parseParagraph(p, writer));
-  return parsed.join('');
+  const parsed: string[] = paragraphs.map((p) => parseParagraph(p, writer));
+  const convertedFinal: string = writer.finalize(parsed);
+  return convertedFinal;
 }
+
+exports.parseDocument = parseDocument;
 
 /** Function to parse paragraph element and convert to Markdown
  * @param  {object} paragraph From 'paragraph' field
