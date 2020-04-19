@@ -69,18 +69,19 @@ class MarkdownWriter implements Writer {
    * @return {string}
    */
   finalize(lines: string[]): string {
-    const zero = 0;
-    const max = lines.length - 1;
-    for (let [i, l] of lines.entries()) {
+    const zero: number = 0;
+    const max: number = lines.length - 1;
+    for (let i = 0; i < lines.length; i++) {
+      let l: string = lines[i];
       if (i == 0 && i+1 <= max) {
-        const next = lines[i+1];
+        const next: string = lines[i+1];
         if (l.startsWith('#') && !next.startsWith('\n')) {
           l += '\n';
           lines[i] = l;
         }
       } else if (i > zero && i < max) {
-        const prev = lines[i-1];
-        const next = lines[i+1];
+        const prev: string = lines[i-1];
+        const next: string = lines[i+1];
         if (l.startsWith('#')) {
           if (!prev.startsWith('\n')) {
             l = '\n' + l;
