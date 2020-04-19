@@ -35,6 +35,9 @@ describe('#parseParagraph', function() {
         assert.equal(parseParagraph(sample.heading5, markdownWriter), '##### The Story\n');
         assert.equal(parseParagraph(sample.heading6, markdownWriter), '###### The Story\n');
       });
+      it('should honor existing hashmarks', function() {
+        assert.equal(parseParagraph(sample.headingHashed, markdownWriter), '## Robbery Aftermath\n');
+      });
     });
   });
 });

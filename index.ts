@@ -58,12 +58,17 @@ class MarkdownWriter implements Writer {
   }
   /**
    * Add ATX-style header to text
+   * Don't add header if one already exists
    * @param {string} text to add header to
    * @param {number} level of ATX-heading to apply
    * @return {string}
    */
   addHeading(text: string, level: number): string {
-    return '#'.repeat(level) + ' ' + text;
+    if (text.startsWith('#')) {
+      return text;
+    } else {
+      return '#'.repeat(level) + ' ' + text;
+    }
   }
   /**
    * Do final pass on array of markdown elements

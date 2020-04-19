@@ -357,6 +357,27 @@ const headingPadding = {
 
 exports.headingPadding = headingPadding;
 
+
+const headingHashed = {
+  'elements': [
+    {
+      'startIndex': 3905,
+      'endIndex': 3915,
+      'textRun': {
+        'content': '## Robbery Aftermath\n',
+        'textStyle': {},
+      },
+    },
+  ],
+  'paragraphStyle': {
+    'headingId': 'h.gbboezabcj4r',
+    'namedStyleType': 'HEADING_3',
+    'direction': 'LEFT_TO_RIGHT',
+  },
+};
+
+exports.headingHashed = headingHashed;
+
 const headingPaddingPileUp = {
   'body': {
     'content': [
