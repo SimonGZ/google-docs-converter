@@ -3,6 +3,9 @@ index.js
 utilities.js
 *.js.map
 
+# Keys to Protect From Source
+*keys*
+
 # Development files
 viking-pitch.json
 line-sample.json
