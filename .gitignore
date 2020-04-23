@@ -1,10 +1,12 @@
 # Generated files
 index.js
 utilities.js
+google.js
 *.js.map
 
 # Keys to Protect From Source
-*keys*
+token.json
+credentials.json
 
 # Development files
 viking-pitch.json
