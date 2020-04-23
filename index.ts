@@ -2,10 +2,12 @@ const {program} = require('commander');
 const fs = require('fs');
 const pjson = require('./package.json');
 const util = require('./utilities');
+const docs = require('./google');
 
 program.version(pjson.version);
 
 program
+    .usage('[options] <google docs id>')
     .option('-f, --format <format>',
         'Format for conversion: markdown, loose-markdown, fountain, org.',
         'loose-markdown')
@@ -153,7 +155,21 @@ if (program.json) {
   const rawData = fs.readFileSync(program.json);
   const json = JSON.parse(rawData);
   console.log(parseDocument(json, writer));
+} else {
+  if (process.argv.length < 3) throw new Error('No docId passed to command.');
+  const inputtedId = process.argv[2];
+  docs.getDocument(inputtedId);
 }
+
+/**
+ * Callback function to output results of API call
+ * @param {object} document JSON object representing document
+ */
+function output(document: object) {
+  console.log(parseDocument(document, writer));
+}
+
+exports.output = output;
 
 /**
  * Function to parse Google Docs API Document
@@ -241,4 +257,3 @@ function parseElement(element: object, writer: Writer): string {
   }
   return content;
 }
-
