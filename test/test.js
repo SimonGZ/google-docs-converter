@@ -1,5 +1,7 @@
 /* eslint-disable max-len */
 
+process.env.NODE_ENV = 'test';
+
 const assert = require('assert');
 const sample = require('./sample-data.js');
 

@@ -33,6 +33,7 @@ exports.getDocument = getDocument;
  * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
  */
 async function getDocumentWithAuth(auth) {
+  if (process.env.NODE_ENV === 'test') return;
   const docs = google.docs({
     version: 'v1',
     auth: auth,

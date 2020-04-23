@@ -15,6 +15,11 @@ program
 
 program.parse(process.argv);
 
+/**
+ * Writer Class
+ * Describes the functions that must be implemented to convert
+ * Google Docs Document into plain text format.
+ */
 interface Writer {
   bold(content: any): string;
   italicize(text: string): string;
@@ -74,12 +79,12 @@ class MarkdownWriter implements Writer {
   }
   /**
    * Do final pass on array of markdown elements
-   * In particular: Properly pad headings
-   * @param {string[]} lines
-   * @return {string}
+   *  - Properly pad headings
+   *  - Join array of strings into output string
+   * @param {string[]} lines Array of converted strings
+   * @return {string} Final output string
    */
   finalize(lines: string[]): string {
-    const zero: number = 0;
     const max: number = lines.length - 1;
     for (let i = 0; i < lines.length; i++) {
       let l: string = lines[i];
@@ -89,7 +94,7 @@ class MarkdownWriter implements Writer {
           l += '\n';
           lines[i] = l;
         }
-      } else if (i > zero && i < max) {
+      } else if (i > 0 && i < max) {
         const prev: string = lines[i-1];
         const next: string = lines[i+1];
         if (l.startsWith('#')) {
@@ -102,7 +107,7 @@ class MarkdownWriter implements Writer {
             lines[i] = l;
           }
         }
-      } else if (i > zero && i == max) { // Handle header on last line
+      } else if (i > 0 && i == max) { // Handle header on last line
         const prev: string = lines[i-1];
         if (l.startsWith('#') && (!prev.endsWith('\n\n') || prev == '\n')) {
           lines[i] = '\n' + l;
@@ -156,7 +161,10 @@ if (program.json) {
   const json = JSON.parse(rawData);
   console.log(parseDocument(json, writer));
 } else {
-  if (process.argv.length < 3) throw new Error('No docId passed to command.');
+  if (process.env.NODE_ENV !== 'test' && process.argv.length < 3) {
+    console.error('Error: No docId');
+    process.exit(-1);
+  }
   const inputtedId = process.argv[2];
   docs.getDocument(inputtedId);
 }
