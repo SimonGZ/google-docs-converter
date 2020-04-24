@@ -7,7 +7,7 @@ const docs = require('./google');
 program.version(pjson.version);
 
 program
-    .usage('[options] <google docs id>')
+    .usage('[options] <Google Docs url or id>')
     .option('-f, --format <format>',
         'Format for conversion: markdown, loose-markdown, fountain, org.',
         'loose-markdown')
@@ -156,13 +156,13 @@ switch (inputtedFormat.toLowerCase()) {
     writer = new LooseMarkdownWriter();
 }
 
-if (program.json) {
+if (program.json) { // If the -j,--json option is used
   const rawData = fs.readFileSync(program.json);
   const json = JSON.parse(rawData);
   console.log(parseDocument(json, writer));
-} else {
+} else { // Otherwise, look for Google Docs id
   if (process.env.NODE_ENV !== 'test' && process.argv.length < 3) {
-    console.error('Error: No docId');
+    console.error('Error: No docId passed to program.');
     process.exit(-1);
   }
   const inputtedId = process.argv[2];
