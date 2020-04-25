@@ -4,10 +4,12 @@ const pjson = require('./package.json');
 const util = require('./utilities');
 const docs = require('./google');
 
+const docIdRegex = /\/document\/d\/([a-zA-Z0-9-_]+)/;
+
 program.version(pjson.version);
 
 program
-    .usage('[options] <Google Docs url or id>')
+    .usage('[options] <Google Docs URL>')
     .option('-f, --format <format>',
         'Format for conversion: markdown, loose-markdown, fountain, org.',
         'loose-markdown')
@@ -161,12 +163,23 @@ if (program.json) { // If the -j,--json option is used
   const json = JSON.parse(rawData);
   console.log(parseDocument(json, writer));
 } else { // Otherwise, look for Google Docs id
-  if (process.env.NODE_ENV !== 'test' && process.argv.length < 3) {
-    console.error('Error: No docId passed to program.');
-    process.exit(-1);
+  /**
+   * Without this check, below code will cause mocha tests to fail.
+   */
+  if (process.env.NODE_ENV !== 'test') {
+    if (process.argv.length < 3) { // Make sure they passed an argument
+      console.error('Error: No Google Docs URL passed to program.');
+      process.exit(-1);
+    }
+    const inputtedId: string = process.argv[2];
+    const matches = inputtedId.match(docIdRegex);
+    if (matches === null || matches.length < 2) {
+      console.error(`Error: Couldn't find docId in ${inputtedId}`);
+      process.exit(-1);
+    }
+    const docId = matches[1];
+    docs.getDocument(docId);
   }
-  const inputtedId = process.argv[2];
-  docs.getDocument(inputtedId);
 }
 
 /**
