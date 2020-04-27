@@ -28,6 +28,7 @@ interface Writer {
   underline(text: string): string;
   strikethrough(text: string): string;
   addHeading(text: string, level: number): string;
+  // addListItem(text: string, level: number): string;
   finalize(lines: string[]): string;
 }
 
@@ -204,11 +205,15 @@ function parseDocument(
 ): string {
   const body: object = document['body'];
   const content: object[] = body['content'];
+  const lists: object = document['lists'];
+  const listTracker: object = {};
+  // fs.writeFileSync('test/sample.json', JSON.stringify(document));
   const paragraphs: object[] = content
       .filter((o) => o.hasOwnProperty('paragraph'))
       .map((o) => o['paragraph']);
 
-  const parsed: string[] = paragraphs.map((p) => parseParagraph(p, writer));
+  const parsed: string[] =
+    paragraphs.map((p) => parseParagraph(p, writer, lists, listTracker));
   const convertedFinal: string = writer.finalize(parsed);
   return convertedFinal;
 }
@@ -218,11 +223,15 @@ exports.parseDocument = parseDocument;
 /** Function to parse paragraph element and convert to Markdown
  * @param  {object} paragraph From 'paragraph' field
  * @param  {Writer} writer class to handle conversions, default is markdown
+ * @param  {object} lists object to provide id's and details for lists
+ * @param  {object} listTracker object to track place in a list
  * @return {string} Markdown as string
  */
 function parseParagraph(
     paragraph: object,
     writer: Writer = new MarkdownWriter(),
+    lists?: object,
+    listTracker?: object,
 ): string {
   const elements : object[] = paragraph['elements'];
   /** Function to reduce elements/textRuns into single string
@@ -245,6 +254,24 @@ function parseParagraph(
     content = writer.addHeading(content, level);
   }
 
+  // Handle Lists
+  if (paragraph.hasOwnProperty('bullet')) { // Means it's a list-item
+    const bullet = paragraph['bullet'];
+    const listId = bullet['listId'];
+    const nestingLevel = bullet['nestingLevel'];
+    const listDetails =
+      lists['lists'][listId]['listProperties']['nestingLevels'][0];
+    if (listDetails.hasOwnProperty('glyphType')) { // means ordered list
+      if (listTracker.hasOwnProperty(listId)) {
+        listTracker[listId] += 1;
+      } else {
+        listTracker[listId] = 1;
+      }
+      content = listTracker[listId].toString() + ' ' + content;
+    } else { // means unordered list
+      content = '- ' + content;
+    }
+  }
   return content;
 }
 

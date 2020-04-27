@@ -3,10 +3,11 @@
 process.env.NODE_ENV = 'test';
 
 const assert = require('assert');
-const sample = require('./sample-data.js');
+const sample = require('./test-data.js');
 
 const {parseParagraph, parseDocument, MarkdownWriter} = require('../index.js');
 const markdownWriter = new MarkdownWriter();
+const lists = sample.lists;
 
 describe('#parseParagraph', function() {
   it('should return plain text from object', function() {
@@ -39,6 +40,11 @@ describe('#parseParagraph', function() {
       });
       it('should honor existing hashmarks', function() {
         assert.equal(parseParagraph(sample.headingHashed, markdownWriter), '## Robbery Aftermath\n');
+      });
+    });
+    describe('lists', function() {
+      it('should handle an unordered list', function() {
+        assert.equal(parseParagraph(sample.unordered, markdownWriter, lists), '- Unordered\n');
       });
     });
   });
