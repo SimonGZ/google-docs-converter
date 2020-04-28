@@ -2,7 +2,7 @@
 const {google} = require('googleapis');
 const ffs = require('fs');
 const readline = require('readline');
-const main = require('./parser');
+const main = require('./cli');
 
 const SCOPES = ['https://www.googleapis.com/auth/documents.readonly'];
 

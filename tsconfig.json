@@ -8,6 +8,6 @@
     "utilities.ts",
     "google.ts",
     "writers.ts",
-    "bin/cli.ts"
+    "cli.ts"
   ]
 }
