@@ -9,6 +9,7 @@ const listSample = require('./list-sample.json');
 const {parseParagraph, parseDocument} = require('../index.js');
 const writers = require('../writers');
 const markdownWriter = new writers.MarkdownWriter();
+const orgmodeWriter = new writers.OrgModeWriter();
 const lists = sample.lists;
 
 describe('#parseParagraph', function() {
@@ -18,7 +19,7 @@ describe('#parseParagraph', function() {
 
   describe('with markdown writer', function() {
     describe('text styling', function() {
-      it('should return markdown italics', function() {
+      it('should returnf markdown italics', function() {
         assert.equal(parseParagraph(sample.italicText, markdownWriter), 'So let’s talk about that young woman. *When We Were Vikings* is unique\n');
       });
       it('should return markdown bold', function() {
@@ -57,9 +58,39 @@ describe('#parseParagraph', function() {
       });
     });
   });
+
+  describe('orgmode writer', function() {
+    describe('text styling', function() {
+      it('should return markdown italics', function() {
+        assert.equal(parseParagraph(sample.italicText, orgmodeWriter), 'So let’s talk about that young woman. /When We Were Vikings/ is unique\n');
+      });
+      it('should return markdown bold', function() {
+        assert.equal(parseParagraph(sample.boldText, orgmodeWriter), 'So let’s talk about that young woman. *When We Were Vikings* is unique\n');
+      });
+      it('should return markdown underline', function() {
+        assert.equal(parseParagraph(sample.underlineText, orgmodeWriter), 'So let’s talk about that young woman. _When We Were Vikings_ is unique\n');
+      });
+      it('should return markdown strikethrough', function() {
+        assert.equal(parseParagraph(sample.strikethroughText, orgmodeWriter), 'So let’s talk about that young woman. +When We Were Vikings+ is unique\n');
+      });
+    });
+    describe('headings', function() {
+      it('should convert headings', function() {
+        assert.equal(parseParagraph(sample.heading1, orgmodeWriter), '* The Story\n');
+        assert.equal(parseParagraph(sample.heading2, orgmodeWriter), '** The Story\n');
+        assert.equal(parseParagraph(sample.heading3, orgmodeWriter), '*** The Story\n');
+        assert.equal(parseParagraph(sample.heading4, orgmodeWriter), '**** The Story\n');
+        assert.equal(parseParagraph(sample.heading5, orgmodeWriter), '***** The Story\n');
+        assert.equal(parseParagraph(sample.heading6, orgmodeWriter), '****** The Story\n');
+      });
+      it('should honor existing hashmarks', function() {
+        assert.equal(parseParagraph(sample.headingOrgHashed, orgmodeWriter), '** Robbery Aftermath\n');
+      });
+    });
+  });
 });
 
-describe('#parseDcoument', function() {
+describe('#parseDocument', function() {
   describe('with markdown writer', function() {
     it('should handle a complex mix of ordered and unordered lists', function() {
       assert.equal(parseDocument(listSample, markdownWriter),
