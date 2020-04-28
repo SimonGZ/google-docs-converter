@@ -4,9 +4,10 @@
     "target": "ES2019",
   },
   "files": [
-    "index.ts",
+    "parser.ts",
     "utilities.ts",
     "google.ts",
-    "writers.ts"
+    "writers.ts",
+    "bin/cli.ts"
   ]
 }

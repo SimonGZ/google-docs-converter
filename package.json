@@ -23,5 +23,8 @@
   },
   "scripts": {
     "test": "mocha"
+  },
+  "bin": {
+    "gconv": "./bin/cli.js"
   }
 }
