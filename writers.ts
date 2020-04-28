@@ -9,7 +9,7 @@ interface Writer {
   underline(text: string): string;
   strikethrough(text: string): string;
   addHeading(text: string, level: number): string;
-  // addListItem(text: string, level: number): string;
+  addLink(text: string, url: string): string;
   finalize(lines: string[]): string;
 }
 
@@ -60,6 +60,15 @@ class MarkdownWriter implements Writer {
     } else {
       return '#'.repeat(level) + ' ' + text;
     }
+  }
+  /**
+   * Add link formatting to text
+   * @param {string} text to wrap in link
+   * @param {string} url to link to
+   * @return {string}
+   */
+  addLink(text: string, url: string): string {
+    return `[${text}](${url})`;
   }
   /**
    * Do final pass on array of markdown elements
@@ -175,6 +184,15 @@ class OrgModeWriter implements Writer {
     } else {
       return '*'.repeat(level) + ' ' + text;
     }
+  }
+  /**
+   * Add link formatting to text
+   * @param {string} text to wrap in link
+   * @param {string} url to link to
+   * @return {string}
+   */
+  addLink(text: string, url: string): string {
+    return `[[${url}][${text}]]`;
   }
   /**
    * Do final pass on array of elements

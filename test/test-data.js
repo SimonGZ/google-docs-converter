@@ -923,3 +923,44 @@ const lists = {
 };
 
 exports.lists = lists;
+
+const externalLink = {
+  'elements': [
+    {
+      'startIndex': 154,
+      'endIndex': 164,
+      'textRun': {
+        'content': 'Add a link',
+        'textStyle': {
+          'underline': true,
+          'foregroundColor': {
+            'color': {
+              'rgbColor': {
+                'red': 0.06666667,
+                'green': 0.33333334,
+                'blue': 0.8,
+              },
+            },
+          },
+          'link': {
+            'url': 'http://simonganz.com',
+          },
+        },
+      },
+    },
+    {
+      'startIndex': 164,
+      'endIndex': 185,
+      'textRun': {
+        'content': ' to an external site\n',
+        'textStyle': {},
+      },
+    },
+  ],
+  'paragraphStyle': {
+    'namedStyleType': 'NORMAL_TEXT',
+    'direction': 'LEFT_TO_RIGHT',
+  },
+};
+
+exports.externalLink = externalLink;

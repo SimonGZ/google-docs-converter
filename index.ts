@@ -193,7 +193,7 @@ function parseElement(element: object, writer: Writer): string {
 
   /* Note, the order of these conditionals matters.
    * HTML tags on outside of markdown. */
-  if (textStyle.underline) {
+  if (textStyle.underline && !textStyle.link) { // Ignore underlining if a link
     content = writer.underline(content);
   }
   if (textStyle.strikethrough) {
@@ -204,6 +204,11 @@ function parseElement(element: object, writer: Writer): string {
   }
   if (textStyle.bold) {
     content = writer.bold(content);
+  }
+  if (textStyle.link) {
+    if (textStyle.link.url) {
+      content = writer.addLink(content, textStyle.link.url);
+    }
   }
   return content;
 }

@@ -57,6 +57,11 @@ describe('#parseParagraph', function() {
         assert.equal(parseParagraph(sample.unorderedNested, markdownWriter, lists, {}), '    - Unordered\n');
       });
     });
+    describe('links', function() {
+      it('should handle an external link', function() {
+        assert.equal(parseParagraph(sample.externalLink, markdownWriter, lists, {}), '[Add a link](http://simonganz.com) to an external site\n');
+      });
+    });
   });
 
   describe('orgmode writer', function() {
@@ -85,6 +90,11 @@ describe('#parseParagraph', function() {
       });
       it('should honor existing hashmarks', function() {
         assert.equal(parseParagraph(sample.headingOrgHashed, orgmodeWriter), '** Robbery Aftermath\n');
+      });
+    });
+    describe('links', function() {
+      it('should handle an external link', function() {
+        assert.equal(parseParagraph(sample.externalLink, orgmodeWriter, lists, {}), '[[http://simonganz.com][Add a link]] to an external site\n');
       });
     });
   });
