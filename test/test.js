@@ -4,6 +4,7 @@ process.env.NODE_ENV = 'test';
 
 const assert = require('assert');
 const sample = require('./test-data.js');
+const listSample = require('./list-sample.json');
 
 const {parseParagraph, parseDocument, MarkdownWriter} = require('../index.js');
 const markdownWriter = new MarkdownWriter();
@@ -46,12 +47,25 @@ describe('#parseParagraph', function() {
       it('should handle an unordered list', function() {
         assert.equal(parseParagraph(sample.unordered, markdownWriter, lists), '- Unordered\n');
       });
+      it('should handle an ordered list', function() {
+        assert.equal(parseParagraph(sample.ordered, markdownWriter, lists, {}), '1. Numbered\n');
+        assert.equal(parseParagraph(sample.ordered, markdownWriter, lists, {'kix.hqmt8p2434fi': {'0': 1}}), '2. Numbered\n');
+      });
+      it('should handle a nested unordered element', function() {
+        assert.equal(parseParagraph(sample.unorderedNested, markdownWriter, lists, {}), '    - Unordered\n');
+      });
     });
   });
 });
 
 describe('#parseDcoument', function() {
   describe('with markdown writer', function() {
+    it('should handle a complex mix of ordered and unordered lists', function() {
+      assert.equal(parseDocument(listSample, markdownWriter),
+      '1. I am a numbered list.\n    1. Nested.\n        1. Deeply.\n' +
+      '            - Strangely\n            - Switching\n2. Back to basics\n' +
+      '\n- Unordered\n    - deeper\n');
+    });
     it('should nicely pad headings', function() {
       assert.equal(parseDocument(sample.headingPadding, markdownWriter), 'She wants to lose her virginity to Marxy. \n\n## Routine\n\nShe brushes her teeth at exactly the same time every day. \n');
       assert.equal(parseDocument(sample.headingPaddingPileUp, markdownWriter), '# Big Heading\n\n## Smaller Heading\n\nShe brushes her teeth at exactly the same time every day. \n');

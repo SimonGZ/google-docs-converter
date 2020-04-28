@@ -207,7 +207,7 @@ function parseDocument(
   const content: object[] = body['content'];
   const lists: object = document['lists'];
   const listTracker: object = {};
-  // fs.writeFileSync('test/sample.json', JSON.stringify(document));
+  // fs.writeFileSync('test/list-sample.json', JSON.stringify(document));
   const paragraphs: object[] = content
       .filter((o) => o.hasOwnProperty('paragraph'))
       .map((o) => o['paragraph']);
@@ -258,19 +258,27 @@ function parseParagraph(
   if (paragraph.hasOwnProperty('bullet')) { // Means it's a list-item
     const bullet = paragraph['bullet'];
     const listId = bullet['listId'];
-    const nestingLevel = bullet['nestingLevel'];
+    const nestingLevel =
+      bullet['nestingLevel'] === undefined ? 0 : bullet['nestingLevel'];
+    const padding = '    '.repeat(nestingLevel);
     const listDetails =
-      lists['lists'][listId]['listProperties']['nestingLevels'][0];
+      lists[listId]['listProperties']['nestingLevels'][nestingLevel];
     if (listDetails.hasOwnProperty('glyphType')) { // means ordered list
-      if (listTracker.hasOwnProperty(listId)) {
-        listTracker[listId] += 1;
+      if (listTracker.hasOwnProperty(listId) &&
+        listTracker[listId].hasOwnProperty(nestingLevel)) {
+          listTracker[listId][nestingLevel] += 1;
       } else {
-        listTracker[listId] = 1;
+        if (!listTracker.hasOwnProperty(listId)) { // If no listId entry, create it
+          listTracker[listId] = {};
+        }
+        listTracker[listId][nestingLevel] = 1;
       }
-      content = listTracker[listId].toString() + ' ' + content;
+      content = listTracker[listId][nestingLevel].toString() + '. ' + content;
     } else { // means unordered list
       content = '- ' + content;
     }
+    // Apply padding using nestingLevel
+    content = padding + content;
   }
   return content;
 }
