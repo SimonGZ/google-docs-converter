@@ -6,6 +6,7 @@
   "files": [
     "index.ts",
     "utilities.ts",
-    "google.ts"
+    "google.ts",
+    "writers.ts"
   ]
 }

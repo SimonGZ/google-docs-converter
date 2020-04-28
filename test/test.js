@@ -6,8 +6,9 @@ const assert = require('assert');
 const sample = require('./test-data.js');
 const listSample = require('./list-sample.json');
 
-const {parseParagraph, parseDocument, MarkdownWriter} = require('../index.js');
-const markdownWriter = new MarkdownWriter();
+const {parseParagraph, parseDocument} = require('../index.js');
+const writers = require('../writers');
+const markdownWriter = new writers.MarkdownWriter();
 const lists = sample.lists;
 
 describe('#parseParagraph', function() {
@@ -62,7 +63,7 @@ describe('#parseDcoument', function() {
   describe('with markdown writer', function() {
     it('should handle a complex mix of ordered and unordered lists', function() {
       assert.equal(parseDocument(listSample, markdownWriter),
-      '1. I am a numbered list.\n    1. Nested.\n        1. Deeply.\n' +
+          '1. I am a numbered list.\n    1. Nested.\n        1. Deeply.\n' +
       '            - Strangely\n            - Switching\n2. Back to basics\n' +
       '\n- Unordered\n    - deeper\n');
     });
