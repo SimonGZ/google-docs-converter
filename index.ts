@@ -31,6 +31,15 @@ switch (inputtedFormat.toLowerCase()) {
   case 'loose-markdown':
     writer = new writers.LooseMarkdownWriter();
     break;
+  case 'org':
+    writer = new writers.OrgModeWriter();
+    break;
+  case 'org-mode':
+    writer = new writers.OrgModeWriter();
+    break;
+  case 'orgmode':
+    writer = new writers.OrgModeWriter();
+    break;
   default:
     writer = new writers.LooseMarkdownWriter();
 }
