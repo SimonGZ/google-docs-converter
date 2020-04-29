@@ -88,6 +88,8 @@ function parseParagraph(
     }
     // Apply padding using nestingLevel
     content = padding + content;
+    // Put newline at end of line, rather than within style text
+    content = content.replace('\n', '') + '\n';
   }
   return content;
 }
