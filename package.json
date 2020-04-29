@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "repository": "https://github.com/SimonGZ/google-docs-converter",
-  "author": "Simon Ganz",
+  "author": "Simon Ganz (https://simonganz.com)",
   "license": "MIT",
   "files": [
     "/lib"
