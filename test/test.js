@@ -9,6 +9,7 @@ const listSample = require('./list-sample.json');
 const {parseParagraph, parseDocument} = require('../dist/parser.js');
 const writers = require('../dist/writers.js');
 const markdownWriter = new writers.MarkdownWriter();
+const githubWriter = new writers.GithubMarkdownWriter();
 const orgmodeWriter = new writers.OrgModeWriter();
 const lists = sample.lists;
 
@@ -63,7 +64,13 @@ describe('#parseParagraph', function() {
       });
     });
   });
-
+  describe('github writer', function() {
+    describe('text styling', function() {
+      it('should use github strikethroughs', function() {
+        assert.equal(parseParagraph(sample.strikethroughText, githubWriter, lists, {}), 'So let’s talk about that young woman. ~~When We Were Vikings~~ is unique\n');
+      });
+    });
+  });
   describe('orgmode writer', function() {
     describe('text styling', function() {
       it('should return markdown italics', function() {

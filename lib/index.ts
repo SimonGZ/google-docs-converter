@@ -13,7 +13,7 @@ program.version(pjson.version);
 program
     .usage('[options] <Google Docs URL>')
     .option('-f, --format <format>',
-        'Format for conversion: markdown, loose-markdown, fountain, org.',
+        'Format for conversion: markdown, gfm, loose-markdown, org',
         'loose-markdown')
     .option('-j, --json <jsonFile>', 'Pass Google Docs JSON as file');
 
@@ -33,6 +33,9 @@ switch (inputtedFormat.toLowerCase()) {
     break;
   case 'loose-markdown':
     writer = new writers.LooseMarkdownWriter();
+    break;
+  case 'gfm':
+    writer = new writers.GithubMarkdownWriter();
     break;
   case 'org':
     writer = new writers.OrgModeWriter();

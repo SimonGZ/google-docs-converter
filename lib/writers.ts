@@ -115,6 +115,23 @@ class MarkdownWriter implements Writer {
 exports.MarkdownWriter = MarkdownWriter;
 
 /**
+ * Class to convert Github-Flavored Markdown
+ * For now, this just means using their strikethroughs.
+ */
+class GithubMarkdownWriter extends MarkdownWriter {
+  /**
+   * strikethrough -- Overwriting inherited method
+   * @param {string} text Text to process
+   * @return {string}
+   */
+  strikethrough(text: string):string {
+    return '~~' + text + '~~';
+  }
+}
+
+exports.GithubMarkdownWriter = GithubMarkdownWriter;
+
+/**
  * Class to convert markdown without html tags
  */
 class LooseMarkdownWriter extends MarkdownWriter {
