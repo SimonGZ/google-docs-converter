@@ -45,6 +45,8 @@ Example:
 gconv -f org http://docs.google.com/blahblah > my-file.org
 ```
 
+NOTE: Google Docs URLs can sometimes include ampersands, question marks, and other characters that may trigger unwanted behavior in your terminal. You may want to surround the URL with quote marks `''` to protect against this. 
+
 For debugging purposes, you can use the -j flag to pass a local JSON file representing the Google Docs file you wish to convert. The [Google Docs JSON format is documented here][Google Docs JSON].
 
 ## Features
