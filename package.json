@@ -8,7 +8,7 @@
   "author": "Simon Ganz (https://simonganz.com)",
   "license": "MIT",
   "files": [
-    "/lib"
+    "/dist"
   ],
   "devDependencies": {
     "@types/node": "^13.11.1",
