@@ -2,12 +2,14 @@
   "compilerOptions": {
     "module": "commonjs",
     "target": "ES2019",
+    "declaration": true,
+    "outDir": "./dist",
   },
-  "files": [
-    "parser.ts",
-    "utilities.ts",
-    "google.ts",
-    "writers.ts",
-    "cli.ts"
+  "include": [
+    "lib/*",
+  ],
+  "exclude": [
+    "node_modules",
+    "test"
   ]
 }

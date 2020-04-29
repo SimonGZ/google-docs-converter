@@ -6,8 +6,8 @@ const assert = require('assert');
 const sample = require('./test-data.js');
 const listSample = require('./list-sample.json');
 
-const {parseParagraph, parseDocument} = require('../index.js');
-const writers = require('../writers');
+const {parseParagraph, parseDocument} = require('../dist/parser.js');
+const writers = require('../dist/writers.js');
 const markdownWriter = new writers.MarkdownWriter();
 const orgmodeWriter = new writers.OrgModeWriter();
 const lists = sample.lists;

@@ -25,6 +25,6 @@
     "test": "mocha"
   },
   "bin": {
-    "gconv": "./cli.js"
+    "gconv": "./dist/index.js"
   }
 }

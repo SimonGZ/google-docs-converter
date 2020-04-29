@@ -1,10 +1,5 @@
 # Generated files
-index.js
-parser.js
-utilities.js
-google.js
-writers.js
-*.js.map
+dist/
 
 # Keys to Protect From Source
 token.json

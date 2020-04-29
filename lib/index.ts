@@ -3,7 +3,7 @@
 export {};
 const {program} = require('commander');
 const fs = require('fs');
-const pjson = require('./package.json');
+const pjson = require('../package.json');
 const writers = require('./writers');
 const parser = require('./parser');
 const docs = require('./google');

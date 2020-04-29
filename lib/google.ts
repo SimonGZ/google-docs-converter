@@ -2,12 +2,13 @@
 const {google} = require('googleapis');
 const ffs = require('fs');
 const readline = require('readline');
-const main = require('./cli');
+const main = require('./index');
+const homeDir = require('os').homedir();
 
 const SCOPES = ['https://www.googleapis.com/auth/documents.readonly'];
 
 // The token.json stores user access/refresh tokens
-const TOKEN_PATH = 'token.json';
+const TOKEN_PATH = `${homeDir}/.config/google-docs-converter/token.json`;
 
 let docId: string | null = null;
 
@@ -19,11 +20,12 @@ let docId: string | null = null;
 async function getDocument(id) {
   docId = id;
   // Load client secrets from a local file
-  ffs.readFile('credentials.json', (err, content) => {
-    if (err) return console.log('Error loading client secret file:', err);
-    // Authorize client then run callback
-    authorize(JSON.parse(content), getDocumentWithAuth);
-  });
+  ffs.readFile(`${homeDir}/.config/google-docs-converter/credentials.json`,
+      (err, content) => {
+        if (err) return console.log('Error loading client secret file:', err);
+        // Authorize client then run callback
+        authorize(JSON.parse(content), getDocumentWithAuth);
+      });
 }
 
 exports.getDocument = getDocument;
