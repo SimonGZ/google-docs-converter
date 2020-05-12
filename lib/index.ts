@@ -5,6 +5,7 @@ const {program} = require('commander');
 const fs = require('fs');
 const pjson = require('../package.json');
 const writers = require('./writers');
+import {Writer} from './writers';
 const parser = require('./parser');
 const docs = require('./google');
 
@@ -66,11 +67,11 @@ if (program.json) {
    * checks to allow tests to run.
    */
   if (process.env.NODE_ENV !== 'test') {
-    if (process.argv.length < 3) { // Make sure user passed an argument
+    if (program.args.length < 1) { // Make sure user passed an argument
       console.error('Error: No Google Docs URL passed to program.');
       process.exit(-1);
     }
-    const inputtedId: string = process.argv[2];
+    const inputtedId: string = program.args[0];
     const docIdRegex = /\/document\/d\/([a-zA-Z0-9-_]+)/;
     const matches = inputtedId.match(docIdRegex);
     if (matches === null || matches.length < 2) {

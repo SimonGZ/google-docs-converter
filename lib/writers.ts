@@ -3,7 +3,7 @@
  * Describes the functions that must be implemented to convert
  * Google Docs Document into plain text format.
  */
-interface Writer {
+export interface Writer {
   bold(content: any): string;
   italicize(text: string): string;
   underline(text: string): string;
