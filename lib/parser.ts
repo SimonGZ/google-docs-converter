@@ -1,5 +1,6 @@
 const util = require('./utilities');
 const writers = require('./writers');
+import {Writer} from './writers';
 
 /**
  * Function to parse Google Docs API Document
