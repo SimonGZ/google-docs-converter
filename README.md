@@ -77,6 +77,7 @@ Google Docs Converter currently supports the following Org Mode elements: headin
 
 - Version 1.0.0: Initial release.
 - Version 1.0.2: Fixing bug with command line argument parser.
+- Version 1.1.0: Exporting Parser and Markdown so they can be imported into other Node projects.
 
 ## Dependencies
 
