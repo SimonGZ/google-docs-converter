@@ -498,6 +498,83 @@ const unicodeTab = {
 
 exports.unicodeTab = unicodeTab;
 
+const unicodeTab2 = {
+  'body': {
+    'content': [
+      {
+        'startIndex': 6427,
+        'endIndex': 6471,
+        'paragraph': {
+          'elements': [
+            {
+              'startIndex': 6427,
+              'endIndex': 6471,
+              'textRun': {
+                'content': 'LITTLE GIRL\u000bWhat’s wrong with your brother?\n',
+                'textStyle': {},
+              },
+            },
+          ],
+          'paragraphStyle': {
+            'namedStyleType': 'NORMAL_TEXT',
+            'direction': 'LEFT_TO_RIGHT',
+          },
+        },
+      },
+      {
+        'startIndex': 46,
+        'endIndex': 47,
+        'paragraph': {
+          'elements': [
+            {
+              'startIndex': 46,
+              'endIndex': 47,
+              'textRun': {
+                'content': '\n',
+                'textStyle': {},
+              },
+            },
+          ],
+          'paragraphStyle': {
+            'namedStyleType': 'NORMAL_TEXT',
+            'direction': 'LEFT_TO_RIGHT',
+          },
+        },
+      },
+      {
+        'startIndex': 47,
+        'endIndex': 355,
+        'paragraph': {
+          'elements': [
+            {
+              'startIndex': 47,
+              'endIndex': 354,
+              'textRun': {
+                'content': 'MIKE\u000bWell, he’s an idiot who thinks he’s a genius, which is the worst kind of idiot. And he’s married to this smoking hot alien chick who is way out of his league and obviously cheating on him. And they’ve got this kid I’ve barely met but I’ve heard is just super weird and creepy and shit she’s you, right?',
+                'textStyle': {},
+              },
+            },
+            {
+              'startIndex': 354,
+              'endIndex': 355,
+              'textRun': {
+                'content': '\n',
+                'textStyle': {},
+              },
+            },
+          ],
+          'paragraphStyle': {
+            'namedStyleType': 'NORMAL_TEXT',
+            'direction': 'LEFT_TO_RIGHT',
+          },
+        },
+      },
+    ],
+  },
+};
+
+exports.unicodeTab2 = unicodeTab2;
+
 const unordered = {
   'elements': [
     {

@@ -108,7 +108,7 @@ class MarkdownWriter implements Writer {
       }
     }
     const joinedText = lines.join('');
-    const cleanedText = joinedText.replace('\u000b', '\n');
+    const cleanedText = joinedText.replace(/\u000b/g, '\n');
     return cleanedText;
   }
 }
@@ -249,7 +249,7 @@ class OrgModeWriter implements Writer {
       }
     }
     const joinedText = lines.join('');
-    const cleanedText = joinedText.replace('\u000b', '\n');
+    const cleanedText = joinedText.replace(/\u000b/g, '\n');
     return cleanedText;
   }
 }

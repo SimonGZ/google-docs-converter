@@ -8,6 +8,7 @@ const listSample = require('./list-sample.json');
 
 const {parseParagraph, parseDocument} = require('../dist/parser.js');
 const writers = require('../dist/writers.js');
+const looseWriter = new writers.LooseMarkdownWriter();
 const markdownWriter = new writers.MarkdownWriter();
 const githubWriter = new writers.GithubMarkdownWriter();
 const orgmodeWriter = new writers.OrgModeWriter();
@@ -121,6 +122,7 @@ describe('#parseDocument', function() {
     });
     it('Replace \\u000b with newline', function() {
       assert.equal(parseDocument(sample.unicodeTab, markdownWriter), '\nWhen Zelda announces herself...\n');
+      assert.equal(parseDocument(sample.unicodeTab2, markdownWriter), 'LITTLE GIRL\nWhat’s wrong with your brother?\n\nMIKE\nWell, he’s an idiot who thinks he’s a genius, which is the worst kind of idiot. And he’s married to this smoking hot alien chick who is way out of his league and obviously cheating on him. And they’ve got this kid I’ve barely met but I’ve heard is just super weird and creepy and shit she’s you, right?\n');
     });
   });
 });
