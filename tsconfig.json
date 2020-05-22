@@ -3,10 +3,10 @@
     "module": "commonjs",
     "target": "ES2019",
     "declaration": true,
-    "outDir": "./dist",
+    "outDir": "./dist"
   },
   "include": [
-    "lib/*",
+    "lib/*"
   ],
   "exclude": [
     "node_modules",
