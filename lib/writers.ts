@@ -154,6 +154,34 @@ class LooseMarkdownWriter extends MarkdownWriter {
 }
 exports.LooseMarkdownWriter = LooseMarkdownWriter;
 
+/** Class implementing Fountain Writer
+  * Don't handle styling at all, leave it to the text
+  */
+class FountainWriter extends LooseMarkdownWriter {
+  /** Ignore bold
+   * @param {string} text
+   * @return {string}
+   */
+  bold(text: string): string {
+    return text;
+  }
+  /** Ignore italic
+    * @param {string} text
+    * @return {string}
+    */
+  italicize(text: string): string {
+    return text;
+  }
+  /** Ignore underline
+   * @param {string} text
+   * @return {string}
+   */
+  underline(text: string): string {
+    return text;
+  }
+}
+exports.FountainWriter = FountainWriter;
+
 /** Class implementing Org Mode Writer */
 class OrgModeWriter implements Writer {
   /**

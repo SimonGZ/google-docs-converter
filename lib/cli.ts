@@ -47,6 +47,9 @@ switch (inputtedFormat.toLowerCase()) {
   case 'orgmode':
     writer = new writers.OrgModeWriter();
     break;
+case 'fountain':
+    writer = new writers.FountainWriter();
+    break;
   default:
     writer = new writers.LooseMarkdownWriter();
 }

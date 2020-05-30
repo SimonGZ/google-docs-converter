@@ -32,7 +32,7 @@ Usage: gconv [options] <Google Docs URL>
 
 Options:
   -V, --version          output the version number
-  -f, --format <format>  Format for conversion: markdown, loose-markdown, org
+  -f, --format <format>  Format for conversion: markdown, loose-markdown, org, fountain
                          (default: "loose-markdown")
   -j, --json <jsonFile>  Pass Google Docs JSON as file
   -h, --help             display help for command
@@ -60,6 +60,7 @@ There are three Markdown flavors currently offered:
 - Regular Markdown (`markdown`) tries to follow the [original John Gruber Markdown spec][Markdown]. It will attempt to use HTML tags to reflect things like strikethroughs and underlines in a Google Doc.
 - Github Flavored Markdown (`gfm`) is identical to Regular Markdown except it supports Github's strikethrough markup (`~~struck text~~`).
 - Loose Markdown (`loose-markdown`) is less faithful to the original Google Doc, ignoring strikethroughs and converting underlines into italics. It's the default because this is usually what I want.
+- Fountain (`fountain`) ignores bold, italic, and underline, bringing in only headings and links. It's useful if you'd rather write out markdown styles in Google Docs rather than use rich text.
 
 ### Org Mode
 
@@ -78,6 +79,7 @@ Google Docs Converter currently supports the following Org Mode elements: headin
 - Version 1.0.0: Initial release.
 - Version 1.0.2: Fixing bug with command line argument parser.
 - Version 1.1.5: Exporting Parser and Markdown so they can be imported into other Node projects. Fixing bugs introduced by that change.
+- Version 1.2.0: Adding Fountain output option which doesn't translate bold, italic, and underline rich text.
 
 ## Dependencies
 
