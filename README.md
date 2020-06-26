@@ -80,6 +80,7 @@ Google Docs Converter currently supports the following Org Mode elements: headin
 - Version 1.0.2: Fixing bug with command line argument parser.
 - Version 1.1.5: Exporting Parser and Markdown so they can be imported into other Node projects. Fixing bugs introduced by that change.
 - Version 1.2.0: Adding Fountain output option which doesn't translate bold, italic, and underline rich text.
+- Version 1.2.1: Fixed bug where documents with images or footnotes wouldn't parse. Images and footnotes are not currently supported and are now just skipped.
 
 ## Dependencies
 

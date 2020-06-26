@@ -103,6 +103,12 @@ exports.parseParagraph = parseParagraph;
  * @return {string}
  */
 function parseElement(element: object, writer: Writer): string {
+  // Currently, parseElement only supports the textRun form of a 
+  // ParagraphElement 
+  // SEE: https://developers.google.com/docs/api/reference/rest/v1/documents#ParagraphElement
+  if (!element.hasOwnProperty('textRun')) { // means NOT regular paragraph
+    return ""
+  }
   let content = element['textRun']['content'];
   const textStyle = element['textRun']['textStyle'];
   if (util.isEmpty(textStyle)) {
