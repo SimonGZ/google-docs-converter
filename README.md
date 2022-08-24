@@ -17,9 +17,9 @@ You'll also need to place a `credentials.json` file from your Google Developer A
 
 The easiest way to get the necessary credentials is at the [Google Docs API Node.js Quickstart page][quickstart]. There you can automatically generate the credentials by hitting the "Enable the Google Docs API" button, selecting Desktop app, and then clicking "DOWNLOAD CLIENT CONFIGURATION". You can then take that credentials.json file and move it to `~/.config/google-docs-converter/`.
 
-Alternatively you can create your own project with the [Google Cloud Console][], enable the Google Docs API, and create OAUTH credentials for a Desktop or Other type application, then download those credentials.
+Alternatively you can create your own project with the [Google Cloud Console][], enable the Google Docs API, and create OAUTH credentials for a Desktop or Other type application, then download those credentials. You'll have to rename them to `credentials.json` and move them to the folder mentioned above.
 
-When you try to use the CLI for the first time, you will be asked to visit a URL, authorize read-only access to your Google Docs, and then paste an authorization code into the terminal. There may be several warnings about the app being unverified. Once you've completed the process, you'll be taken to a broken URL which will contain the authorization code you need. (See [this StackOverflow post][StackOverflow] for more context on how to get the authorization code.)
+After you have the credentials, when you try to use the CLI for the first time, you will be asked to visit a URL, authorize read-only access to your Google Docs, and then paste an authorization code into the terminal. There may be several warnings about the app being unverified. Once you've completed the process, you'll be taken to a broken URL which will contain the authorization code you need. (See [this StackOverflow post][StackOverflow] for more context on how to get the authorization code.)
 
 ### Windows
 
