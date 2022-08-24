@@ -19,6 +19,8 @@ The easiest way to get the necessary credentials is at the [Google Docs API Node
 
 Alternatively you can create your own project with the [Google Cloud Console][], enable the Google Docs API, and create OAUTH credentials for a Desktop or Other type application, then download those credentials.
 
+When you try to use the CLI for the first time, you will be asked to visit a URL, authorize read-only access to your Google Docs, and then paste an authorization code into the terminal. There may be several warnings about the app being unverified. Once you've completed the process, you'll be taken to a broken URL which will contain the authorization code you need. (See [this StackOverflow post][StackOverflow] for more context on how to get the authorization code.)
+
 ### Windows
 
 ` ¯\_(ツ)_/¯ `
@@ -103,3 +105,4 @@ It was written in [Typescript][] with [ESLint][] and uses [Mocha][] for tests.
 [Typescript]: https://www.typescriptlang.org
 [ESLint]: https://eslint.org
 [Mocha]: https://mochajs.org
+[StackOverflow]: https://stackoverflow.com/questions/71779189/google-sheets-api-localhost-refused-to-connect-when-authorizing
