@@ -20,13 +20,15 @@ program
 
 program.parse(process.argv);
 
+const options = program.opts();
+
 /** Create Writer
  * Based on -f flag, create the writer which will be used to
  * convert the JSON. Default is LooseMarkdown.
  *
  * Writer types are defined in writers.ts
  */
-const inputtedFormat: string = program.format;
+const inputtedFormat: string = options.format;
 let writer: Writer;
 switch (inputtedFormat.toLowerCase()) {
   case 'markdown':
@@ -47,7 +49,7 @@ switch (inputtedFormat.toLowerCase()) {
   case 'orgmode':
     writer = new writers.OrgModeWriter();
     break;
-case 'fountain':
+  case 'fountain':
     writer = new writers.FountainWriter();
     break;
   default:
@@ -60,8 +62,8 @@ case 'fountain':
  *
  * Otherwise, begin the authorization routine to make a Google Docs request.
 */
-if (program.json) {
-  const rawData = fs.readFileSync(program.json);
+if (options.json) {
+  const rawData = fs.readFileSync(options.json);
   const json = JSON.parse(rawData);
   console.log(parser.parseDocument(json, writer));
 } else {
@@ -70,16 +72,16 @@ if (program.json) {
    * checks to allow tests to run.
    */
   if (process.env.NODE_ENV !== 'test') {
-    if (program.args.length < 1) { // Make sure user passed an argument
+    if (process.argv.length === 2) { // Make sure user passed an argument
       console.error('Error: No Google Docs URL passed to program.');
-      process.exit(-1);
+      program.help({error: true});
     }
     const inputtedId: string = program.args[0];
     const docIdRegex = /\/document\/d\/([a-zA-Z0-9-_]+)/;
     const matches = inputtedId.match(docIdRegex);
     if (matches === null || matches.length < 2) {
       console.error(`Error: Couldn't find docId in ${inputtedId}`);
-      process.exit(-1);
+      program.help({error: true});
     }
     const docId = matches[1];
     docs.getDocument(docId);
