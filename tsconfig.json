@@ -3,7 +3,8 @@
     "module": "commonjs",
     "target": "ES2019",
     "declaration": true,
-    "outDir": "./dist"
+    "outDir": "./dist",
+    "esModuleInterop": true
   },
   "include": [
     "lib/*"
