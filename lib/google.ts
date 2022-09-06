@@ -1,16 +1,103 @@
 /* eslint-disable camelcase */
-const {google} = require('googleapis');
-const ffs = require('fs');
-const readline = require('readline');
-const main = require('./cli');
-const homeDir = require('os').homedir();
-
-const SCOPES = ['https://www.googleapis.com/auth/documents.readonly'];
-
-// The token.json stores user access/refresh tokens
-const TOKEN_PATH = `${homeDir}/.config/google-docs-converter/token.json`;
+import { google } from 'googleapis';
+import ffs = require('fs');
+import * as main from './cli';
+import path from 'path';
+import os from 'os';
+import http from 'http';
+import url from 'url';
+import opn from 'open';
+import destroyer from 'server-destroy';
+const homedir = os.homedir();
 
 let docId: string | null = null;
+
+const keyPath = path.join(homedir, '.config', 'google-docs-converter', 'credentials.json');
+const tokenPath = path.join(homedir, '.config', 'google-docs-converter', 'tokens.json');
+
+interface ClientDetails {
+    client_id: string;
+    client_secret: string;
+    redirect_uris: string[];
+}
+
+interface Keys {
+    installed?: ClientDetails;
+    web?: ClientDetails;
+    redirect_uris?: string[];
+}
+
+let keys: Keys = { redirect_uris: [''] };
+let details: ClientDetails;
+if (ffs.existsSync(keyPath)) {
+    keys = require(keyPath);
+    if (keys.hasOwnProperty('web')) {
+        details = keys.web;
+    } else if (keys.hasOwnProperty('installed')) {
+        console.error("ERROR: Wrong kind of credentials file found (Desktop instead of Web application).\nThough it makes logical sense to use the 'Desktop' style of app in the Google\nCloud Console, unfortunately this causes problems with the authorization scheme\nused by this program.\n\nGet credentials for a web application with authorized redirect URI:\nhttp://localhost:3000/oauth2callback.\n\nhttps://console.developers.google.com/apis/credentials");
+        process.exit(1)
+    }
+} else {
+    console.error(`ERROR: credentials.json file was not found at\n${keyPath}\n\nHave you created the necessary credentials in Google Cloud Console?\nSee installation instructions for more details.`);
+    process.exit(1)
+}
+
+console.log("details:");
+console.log(details);
+
+/**
+ * Create a new OAuth2 client with the configured keys.
+ */
+const oauth2Client = new google.auth.OAuth2(
+    details.client_id, details.client_secret, details.redirect_uris[0]);
+
+google.options({ auth: oauth2Client });
+
+/**
+ * Open an http server to accept the oauth callback. In this simple example, the only request to our webserver is to /callback?code=<code>
+ */
+async function authenticate() {
+    return new Promise((resolve, reject) => {
+        // grab the url that will be used for authorization
+        const authorizeUrl = oauth2Client.generateAuthUrl({
+            access_type: 'offline',
+            scope: 'https://www.googleapis.com/auth/documents.readonly',
+        });
+        const server = http
+            .createServer(async (req, res) => {
+                try {
+                    if (req.url.indexOf('/oauth2callback') > -1) {
+                        const qs = new url.URL(req.url, 'http://localhost:3000')
+                            .searchParams;
+                        res.end('Authentication successful! Please return to the console.');
+                        console.log("qs:");
+                        console.log(qs);
+                        server.destroy();
+                        console.log("get code:");
+                        console.log(qs.get('code'));
+                        console.log("Requesting token:");
+                        const { tokens } = await oauth2Client.getToken(qs.get('code'));
+                        console.log("tokens:");
+                        console.log(tokens);
+                        oauth2Client.credentials = tokens; // eslint-disable-line require-atomic-updates
+                        // Store the token to disk for later program executions
+                        // ffs.writeFile(tokenPath, JSON.stringify(tokens), (err) => {
+                        //     if (err) return console.error(err);
+                        //     console.log('Token stored to', tokenPath);
+                        // });
+                        resolve(oauth2Client);
+                    }
+                } catch (e) {
+                    reject(e);
+                }
+            })
+            .listen(3000, () => {
+                // open the browser to the authorize url to start the workflow
+                opn(authorizeUrl, { wait: false }).then((cp) => cp.unref());
+            });
+        destroyer(server);
+    });
+}
 
 /**
  * Get the JSON representation of a Google Doc
@@ -18,16 +105,14 @@ let docId: string | null = null;
  * @param {string} id The ID of the Google Doc being requested.
  */
 async function getDocument(id) {
-  docId = id;
-  // Load client secrets from a local file
-  ffs.readFile(`${homeDir}/.config/google-docs-converter/credentials.json`,
-      (err, content) => {
-        if (err) return console.log('Error loading client secret file:', err);
-        // Authorize client then run callback
-        authorize(JSON.parse(content), getDocumentWithAuth);
-      });
+    docId = id;
+    authenticate()
+        .then((client) => {
+            console.log(client);
+            getDocumentWithAuth(client);
+        })
+        .catch(console.error);
 }
-
 exports.getDocument = getDocument;
 
 /**
@@ -35,72 +120,20 @@ exports.getDocument = getDocument;
  * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
  */
 async function getDocumentWithAuth(auth) {
-  if (process.env.NODE_ENV === 'test') return;
-  const docs = google.docs({
-    version: 'v1',
-    auth: auth,
-  });
-  if (docId === null) throw new Error('docId was never set.');
-  const params = {documentId: docId};
-  await docs.documents.get(
-      params,
-      (err, res) => {
-        if (err) {
-          console.error(err);
-          throw err;
-        }
-        main.output(res.data);
-      } );
-}
-
-
-/**
- * Create an OAuth2 client with the given credentials, and then execute the
- * given callback function.
- * @param {Object} credentials The authorization client credentials.
- * @param {function} callback The callback to call with the authorized client.
- */
-function authorize(credentials, callback) {
-  const {client_secret, client_id, redirect_uris} = credentials.installed;
-  const oAuth2Client = new google.auth.OAuth2(
-      client_id, client_secret, redirect_uris[0]);
-
-  // Check if we have previously stored a token.
-  ffs.readFile(TOKEN_PATH, (err, token) => {
-    if (err) return getNewToken(oAuth2Client, callback);
-    oAuth2Client.setCredentials(JSON.parse(token));
-    callback(oAuth2Client);
-  });
-}
-
-/**
- * Get and store new token after prompting for user authorization, and then
- * execute the given callback with the authorized OAuth2 client.
- * @param {google.auth.OAuth2} oAuth2Client The OAuth2 client to get token for.
- * @param {getEventsCallback} callback The callback for the authorized client.
- */
-function getNewToken(oAuth2Client, callback) {
-  const authUrl = oAuth2Client.generateAuthUrl({
-    access_type: 'offline',
-    scope: SCOPES,
-  });
-  console.log('Authorize this app by visiting this url:', authUrl);
-  const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout,
-  });
-  rl.question('Enter the code from that page here: ', (code) => {
-    rl.close();
-    oAuth2Client.getToken(code, (err, token) => {
-      if (err) return console.error('Error retrieving access token', err);
-      oAuth2Client.setCredentials(token);
-      // Store the token to disk for later program executions
-      ffs.writeFile(TOKEN_PATH, JSON.stringify(token), (err) => {
-        if (err) return console.error(err);
-        console.log('Token stored to', TOKEN_PATH);
-      });
-      callback(oAuth2Client);
+    if (process.env.NODE_ENV === 'test') return;
+    const docs = google.docs({
+        version: 'v1',
+        auth: auth,
     });
-  });
+    if (docId === null) throw new Error('docId was never set.');
+    const params = { documentId: docId };
+    await docs.documents.get(
+        params,
+        (err, res) => {
+            if (err) {
+                console.error(err);
+                throw err;
+            }
+            main.output(res.data);
+        });
 }
-

@@ -92,8 +92,6 @@ if (options.json) {
  * Callback function to output results of API call
  * @param {object} document JSON object representing document
  */
-function output(document: object) {
+export function output(document: object) {
   console.log(parser.parseDocument(document, writer));
 }
-
-exports.output = output;
