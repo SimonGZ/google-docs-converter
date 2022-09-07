@@ -42,9 +42,6 @@ if (ffs.existsSync(keyPath)) {
     process.exit(1)
 }
 
-console.log("details:");
-console.log(details);
-
 /**
  * Create a new OAuth2 client with the configured keys.
  */
@@ -54,48 +51,55 @@ const oauth2Client = new google.auth.OAuth2(
 google.options({ auth: oauth2Client });
 
 /**
- * Open an http server to accept the oauth callback. In this simple example, the only request to our webserver is to /callback?code=<code>
+ * Watch for refresh tokens and properly store them for future use.
+ */
+oauth2Client.on('tokens', (tokens) => {
+    if (tokens.refresh_token) {
+        // Store the token to disk for later program executions
+        ffs.writeFile(tokenPath, JSON.stringify(tokens), (err) => {
+            if (err) return console.error(err);
+        });
+    }
+});
+
+/**
+ * Open an http server to accept the oauth callback. The only request to webserver is to /callback?code=<code>
  */
 async function authenticate() {
     return new Promise((resolve, reject) => {
-        // grab the url that will be used for authorization
-        const authorizeUrl = oauth2Client.generateAuthUrl({
-            access_type: 'offline',
-            scope: 'https://www.googleapis.com/auth/documents.readonly',
-        });
-        const server = http
-            .createServer(async (req, res) => {
-                try {
-                    if (req.url.indexOf('/oauth2callback') > -1) {
-                        const qs = new url.URL(req.url, 'http://localhost:3000')
-                            .searchParams;
-                        res.end('Authentication successful! Please return to the console.');
-                        console.log("qs:");
-                        console.log(qs);
-                        server.destroy();
-                        console.log("get code:");
-                        console.log(qs.get('code'));
-                        console.log("Requesting token:");
-                        const { tokens } = await oauth2Client.getToken(qs.get('code'));
-                        console.log("tokens:");
-                        console.log(tokens);
-                        oauth2Client.credentials = tokens; // eslint-disable-line require-atomic-updates
-                        // Store the token to disk for later program executions
-                        // ffs.writeFile(tokenPath, JSON.stringify(tokens), (err) => {
-                        //     if (err) return console.error(err);
-                        //     console.log('Token stored to', tokenPath);
-                        // });
-                        resolve(oauth2Client);
-                    }
-                } catch (e) {
-                    reject(e);
-                }
-            })
-            .listen(3000, () => {
-                // open the browser to the authorize url to start the workflow
-                opn(authorizeUrl, { wait: false }).then((cp) => cp.unref());
+        // First check if we have an existing token to use
+        if (ffs.existsSync(tokenPath)) {
+            const tokens = require(tokenPath);
+            oauth2Client.setCredentials(tokens)
+            resolve(oauth2Client);
+        } else {
+            // grab the url that will be used for authorization
+            const authorizeUrl = oauth2Client.generateAuthUrl({
+                access_type: 'offline',
+                scope: 'https://www.googleapis.com/auth/documents.readonly',
             });
-        destroyer(server);
+            const server = http
+                .createServer(async (req, res) => {
+                    try {
+                        if (req.url.indexOf('/oauth2callback') > -1) {
+                            const qs = new url.URL(req.url, 'http://localhost:3000')
+                                .searchParams;
+                            res.end('Authentication successful! Please return to the console.');
+                            server.destroy();
+                            const { tokens } = await oauth2Client.getToken(qs.get('code'));
+                            oauth2Client.credentials = tokens;
+                            resolve(oauth2Client);
+                        }
+                    } catch (e) {
+                        reject(e);
+                    }
+                })
+                .listen(3000, () => {
+                    // open the browser to the authorize url to start the workflow
+                    opn(authorizeUrl, { wait: false }).then((cp) => cp.unref());
+                });
+            destroyer(server);
+        }
     });
 }
 
@@ -104,14 +108,15 @@ async function authenticate() {
  * Set the docId variable then call Google Auth
  * @param {string} id The ID of the Google Doc being requested.
  */
-async function getDocument(id) {
+async function getDocument(id: string) {
     docId = id;
     authenticate()
         .then((client) => {
-            console.log(client);
             getDocumentWithAuth(client);
         })
-        .catch(console.error);
+        .catch((err) => {
+            deleteTokenError();
+        })
 }
 exports.getDocument = getDocument;
 
@@ -127,13 +132,21 @@ async function getDocumentWithAuth(auth) {
     });
     if (docId === null) throw new Error('docId was never set.');
     const params = { documentId: docId };
-    await docs.documents.get(
+    docs.documents.get(
         params,
         (err, res) => {
             if (err) {
-                console.error(err);
-                throw err;
+                deleteTokenError();
             }
             main.output(res.data);
         });
+}
+
+/**
+ * Utility function to log error to console, delete current token
+ */
+function deleteTokenError() {
+    console.error("An error has triggered. Deleting the refresh token so the program can be reauthorized.");
+    ffs.unlink(tokenPath, console.error);
+    process.exit(1);
 }
