@@ -15,11 +15,9 @@ npm install -g google-docs-converter
 
 You'll also need to place a `credentials.json` file from your Google Developer Account in the folder `~/.config/google-docs-converter/`.
 
-The easiest way to get the necessary credentials is at the [Google Docs API Node.js Quickstart page][quickstart]. There you can automatically generate the credentials by hitting the "Enable the Google Docs API" button, selecting Desktop app, and then clicking "DOWNLOAD CLIENT CONFIGURATION". You can then take that credentials.json file and move it to `~/.config/google-docs-converter/`.
+You can generate the correct credentials using the [Google Cloud Console][]. Create a project, enable the Google Docs API (readonly is fine), and create OAUTH credentials for a **Web application** with the authorized URI redirect `http://localhost:3000`. You may also want to put the project into "Testing" mode and authorize your own email address to cut down on warnings from Google about using an unverified project. Then download those credentials, rename the file to `credentials.json` and move it to `~/.config/google-docs-converter/`.
 
-Alternatively you can create your own project with the [Google Cloud Console][], enable the Google Docs API, and create OAUTH credentials for a Desktop or Other type application, then download those credentials. You'll have to rename them to `credentials.json` and move them to the folder mentioned above.
-
-After you have the credentials, when you try to use the CLI for the first time, you will be asked to visit a URL, authorize read-only access to your Google Docs, and then paste an authorization code into the terminal. There may be several warnings about the app being unverified. Once you've completed the process, you'll be taken to a broken URL which will contain the authorization code you need. (See [this StackOverflow post][StackOverflow] for more context on how to get the authorization code.)
+After you have the credentials, when you try to use the CLI for the first time, a web browser window will open and ask you to authorize read-only access to your Google Docs. 
 
 ### Windows
 
@@ -78,12 +76,13 @@ Google Docs Converter currently supports the following Org Mode elements: headin
 
 ## Release History
 
-- Version 1.0.0: Initial release.
-- Version 1.0.2: Fixing bug with command line argument parser.
-- Version 1.1.5: Exporting Parser and Markdown so they can be imported into other Node projects. Fixing bugs introduced by that change.
-- Version 1.2.0: Adding Fountain output option which doesn't translate bold, italic, and underline rich text.
-- Version 1.2.1: Fixed bug where documents with images or footnotes wouldn't parse. Images and footnotes are not currently supported and are now just skipped.
+- Version 2.0.0: Updating dependencies and Google Auth code to current best practices.
 - Version 1.2.2: Updating dependencies to include bugfixes.
+- Version 1.2.1: Fixed bug where documents with images or footnotes wouldn't parse. Images and footnotes are not currently supported and are now just skipped.
+- Version 1.2.0: Adding Fountain output option which doesn't translate bold, italic, and underline rich text.
+- Version 1.1.5: Exporting Parser and Markdown so they can be imported into other Node projects. Fixing bugs introduced by that change.
+- Version 1.0.2: Fixing bug with command line argument parser.
+- Version 1.0.0: Initial release.
 
 ## Dependencies
 
