@@ -15,7 +15,7 @@ npm install -g google-docs-converter
 
 You'll also need to place a `credentials.json` file from your Google Developer Account in the folder `~/.config/google-docs-converter/`.
 
-You can generate the correct credentials using the [Google Cloud Console][]. Create a project, enable the Google Docs API (readonly is fine), and create OAUTH credentials for a **Web application** with the authorized URI redirect `http://localhost:3000`. You may also want to put the project into "Testing" mode and authorize your own email address to cut down on warnings from Google about using an unverified project. Then download those credentials, rename the file to `credentials.json` and move it to `~/.config/google-docs-converter/`.
+You can generate the correct credentials using the [Google Cloud Console][]. Create a project, enable the Google Docs API (readonly is fine), and create OAUTH credentials for a **Web application** with the authorized URI redirect `http://localhost:3000/oauth2callback`. You may also want to put the project into "Testing" mode and authorize your own email address to cut down on warnings from Google about using an unverified project. Then download those credentials, rename the file to `credentials.json` and move it to `~/.config/google-docs-converter/`.
 
 After you have the credentials, when you try to use the CLI for the first time, a web browser window will open and ask you to authorize read-only access to your Google Docs. 
 
@@ -76,6 +76,7 @@ Google Docs Converter currently supports the following Org Mode elements: headin
 
 ## Release History
 
+- Version 2.0.1: Updating README instructions.
 - Version 2.0.0: Updating dependencies and Google Auth code to current best practices.
 - Version 1.2.2: Updating dependencies to include bugfixes.
 - Version 1.2.1: Fixed bug where documents with images or footnotes wouldn't parse. Images and footnotes are not currently supported and are now just skipped.
