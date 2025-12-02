@@ -78,6 +78,7 @@ Google Docs Converter currently supports the following Org Mode elements: headin
 
 ## Release History
 
+-   Version 2.0.3: Updating googleapis to latest version.
 -   Version 2.0.2: Updating dependencies to address upstream security issues.
 -   Version 2.0.1: Updating README instructions.
 -   Version 2.0.0: Updating dependencies and Google Auth code to current best practices.

@@ -1,6 +1,6 @@
 {
   "name": "google-docs-converter",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Tool to convert Google Docs Documents into Markdown and Org Mode plain text formats.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "commander": "^9.5.0",
-    "googleapis": "^107.0.0",
+    "googleapis": "^166.0.0",
     "open": "^8.4.2",
     "server-destroy": "^1.0.1"
   },
