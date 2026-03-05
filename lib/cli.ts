@@ -12,9 +12,9 @@ const docs = require('./google');
 program.version(pjson.version);
 
 program
-    .usage('[options] <Google Docs URL>')
+    .argument('[url]', 'Google Docs URL')
     .option('-f, --format <format>',
-        'Format for conversion: markdown, gfm, loose-markdown, org',
+        'Format for conversion: markdown, gfm, loose-markdown, org, google-markdown',
         'loose-markdown')
     .option('-j, --json <jsonFile>', 'Pass Google Docs JSON as file');
 
@@ -56,6 +56,13 @@ switch (inputtedFormat.toLowerCase()) {
     writer = new writers.LooseMarkdownWriter();
 }
 
+if (inputtedFormat.toLowerCase() === 'google-markdown') {
+    // Do nothing here, we'll handle it below
+} else if (!writer && inputtedFormat.toLowerCase() !== 'google-markdown') {
+    // Fallback if writer wasn't set and it's not google-markdown (though default handles this)
+     writer = new writers.LooseMarkdownWriter();
+}
+
 /** If the -j flag is used, don't call the Google Docs API.
  * Just use the local file that was passed and parse as JSON.
  * Mostly for debugging purposes.
@@ -84,7 +91,11 @@ if (options.json) {
       program.help({error: true});
     }
     const docId = matches[1];
-    docs.getDocument(docId);
+    if (inputtedFormat.toLowerCase() === 'google-markdown') {
+        docs.exportDocument(docId, 'text/markdown');
+    } else {
+        docs.getDocument(docId);
+    }
   }
 }
 

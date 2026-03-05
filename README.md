@@ -16,7 +16,7 @@ npm install -g google-docs-converter
 
 You'll also need to place a `credentials.json` file from your Google Developer Account in the folder `~/.config/google-docs-converter/`.
 
-You can generate the correct credentials using the [Google Cloud Console][]. Create a project, enable the Google Docs API (readonly is fine), and create OAUTH credentials for a **Web application** with the authorized URI redirect `http://localhost:3000/oauth2callback`. You may also want to put the project into "Testing" mode and authorize your own email address to cut down on warnings from Google about using an unverified project. Then download those credentials, rename the file to `credentials.json` and move it to `~/.config/google-docs-converter/`.
+You can generate the correct credentials using the [Google Cloud Console][]. Create a project, enable the **Google Docs API** and the **Google Drive API** (readonly is fine for both), and create OAUTH credentials for a **Web application** with the authorized URI redirect `http://localhost:3000/oauth2callback`. You may also want to put the project into "Testing" mode and authorize your own email address to cut down on warnings from Google about using an unverified project. Then download those credentials, rename the file to `credentials.json` and move it to `~/.config/google-docs-converter/`.
 
 After you have the credentials, when you try to use the CLI for the first time, a web browser window will open and ask you to authorize read-only access to your Google Docs.
 
@@ -33,7 +33,7 @@ Usage: gconv [options] <Google Docs URL>
 
 Options:
   -V, --version          output the version number
-  -f, --format <format>  Format for conversion: markdown, loose-markdown, org, fountain
+  -f, --format <format>  Format for conversion: markdown, gfm, loose-markdown, org, fountain, google-markdown
                          (default: "loose-markdown")
   -j, --json <jsonFile>  Pass Google Docs JSON as file
   -h, --help             display help for command
@@ -59,10 +59,11 @@ Google Docs Converter supports a subset of Markdown reflecting the basic element
 
 There are three Markdown flavors currently offered:
 
--   Regular Markdown (`markdown`) tries to follow the [original John Gruber Markdown spec][Markdown]. It will attempt to use HTML tags to reflect things like strikethroughs and underlines in a Google Doc.
--   Github Flavored Markdown (`gfm`) is identical to Regular Markdown except it supports Github's strikethrough markup (`~~struck text~~`).
--   Loose Markdown (`loose-markdown`) is less faithful to the original Google Doc, ignoring strikethroughs and converting underlines into italics. It's the default because this is usually what I want.
--   Fountain (`fountain`) ignores bold, italic, and underline, bringing in only headings and links. It's useful if you'd rather write out markdown styles in Google Docs rather than use rich text.
+- Regular Markdown (`markdown`) tries to follow the [original John Gruber Markdown spec][Markdown]. It will attempt to use HTML tags to reflect things like strikethroughs and underlines in a Google Doc.
+- Github Flavored Markdown (`gfm`) is identical to Regular Markdown except it supports Github's strikethrough markup (`~~struck text~~`).
+- Loose Markdown (`loose-markdown`) is less faithful to the original Google Doc, ignoring strikethroughs and converting underlines into italics. It's the default because this is usually what I want.
+- Fountain (`fountain`) ignores bold, italic, and underline, bringing in only headings and links. It's useful if you'd rather write out markdown styles in Google Docs rather than use rich text.
+- Google Markdown (`google-markdown`) uses Google's built-in Markdown export. This provides the "official" Markdown representation from Google.
 
 ### Org Mode
 
@@ -70,24 +71,25 @@ Google Docs Converter currently supports the following Org Mode elements: headin
 
 ## Not Currently Supported
 
--   Images
--   Tables
--   Centered text
--   Horizontal Rules (e.g. `<hr>`)
--   Complex, overlapping styled text (bold text inside italic, etc)
+- Images
+- Tables
+- Centered text
+- Horizontal Rules (e.g. `<hr>`)
+- Complex, overlapping styled text (bold text inside italic, etc)
 
 ## Release History
 
--   Version 2.0.3: Updating googleapis to latest version.
--   Version 2.0.2: Updating dependencies to address upstream security issues.
--   Version 2.0.1: Updating README instructions.
--   Version 2.0.0: Updating dependencies and Google Auth code to current best practices.
--   Version 1.2.2: Updating dependencies to include bugfixes.
--   Version 1.2.1: Fixed bug where documents with images or footnotes wouldn't parse. Images and footnotes are not currently supported and are now just skipped.
--   Version 1.2.0: Adding Fountain output option which doesn't translate bold, italic, and underline rich text.
--   Version 1.1.5: Exporting Parser and Markdown so they can be imported into other Node projects. Fixing bugs introduced by that change.
--   Version 1.0.2: Fixing bug with command line argument parser.
--   Version 1.0.0: Initial release.
+- Version 3.0.0: Adding `google-markdown` format using Google's built-in Markdown export via the Drive API. Enabling the Google Drive API and granting `drive.readonly` scope is now required. Updated dependencies.
+- Version 2.0.3: Updating googleapis to latest version.
+- Version 2.0.2: Updating dependencies to address upstream security issues.
+- Version 2.0.1: Updating README instructions.
+- Version 2.0.0: Updating dependencies and Google Auth code to current best practices.
+- Version 1.2.2: Updating dependencies to include bugfixes.
+- Version 1.2.1: Fixed bug where documents with images or footnotes wouldn't parse. Images and footnotes are not currently supported and are now just skipped.
+- Version 1.2.0: Adding Fountain output option which doesn't translate bold, italic, and underline rich text.
+- Version 1.1.5: Exporting Parser and Markdown so they can be imported into other Node projects. Fixing bugs introduced by that change.
+- Version 1.0.2: Fixing bug with command line argument parser.
+- Version 1.0.0: Initial release.
 
 ## Dependencies
 

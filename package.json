@@ -1,35 +1,33 @@
 {
-  "name": "google-docs-converter",
-  "version": "2.0.3",
-  "description": "Tool to convert Google Docs Documents into Markdown and Org Mode plain text formats.",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "repository": "https://github.com/SimonGZ/google-docs-converter",
-  "author": "Simon Ganz (https://simonganz.com)",
-  "license": "MIT",
-  "files": [
-    "/dist"
-  ],
-  "devDependencies": {
-    "@types/node": "^18.19.67",
-    "@types/server-destroy": "^1.0.1",
-    "@typescript-eslint/eslint-plugin": "^5.62.0",
-    "@typescript-eslint/parser": "^5.62.0",
-    "eslint": "^8.57.1",
-    "mocha": "^10.0.0",
-    "typescript": "^4.9.5"
-  },
-  "dependencies": {
-    "commander": "^9.5.0",
-    "googleapis": "^166.0.0",
-    "open": "^8.4.2",
-    "server-destroy": "^1.0.1"
-  },
-  "scripts": {
-    "build": "tsc",
-    "test": "mocha"
-  },
-  "bin": {
-    "gconv": "./dist/cli.js"
-  }
+    "name": "google-docs-converter",
+    "version": "3.0.0",
+    "description": "Tool to convert Google Docs Documents into Markdown and Org Mode plain text formats.",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "repository": "https://github.com/SimonGZ/google-docs-converter",
+    "author": "Simon Ganz (https://simonganz.com)",
+    "license": "MIT",
+    "files": ["/dist"],
+    "devDependencies": {
+        "@types/node": "^25.3.3",
+        "@types/server-destroy": "^1.0.4",
+        "@typescript-eslint/eslint-plugin": "^8.56.1",
+        "@typescript-eslint/parser": "^8.56.1",
+        "eslint": "^10.0.2",
+        "mocha": "^11.7.5",
+        "typescript": "^5.9.3"
+    },
+    "dependencies": {
+        "commander": "^14.0.3",
+        "googleapis": "^171.4.0",
+        "open": "^11.0.0",
+        "server-destroy": "^1.0.0"
+    },
+    "scripts": {
+        "build": "tsc",
+        "test": "mocha"
+    },
+    "bin": {
+        "gconv": "./dist/cli.js"
+    }
 }

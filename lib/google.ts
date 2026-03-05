@@ -76,7 +76,10 @@ async function authenticate() {
             // grab the url that will be used for authorization
             const authorizeUrl = oauth2Client.generateAuthUrl({
                 access_type: 'offline',
-                scope: 'https://www.googleapis.com/auth/documents.readonly',
+                scope: [
+                    'https://www.googleapis.com/auth/documents.readonly',
+                    'https://www.googleapis.com/auth/drive.readonly'
+                ]
             });
             const server = http
                 .createServer(async (req, res) => {
@@ -87,6 +90,7 @@ async function authenticate() {
                             res.end('Authentication successful! Please return to the console.');
                             server.destroy();
                             const { tokens } = await oauth2Client.getToken(qs.get('code'));
+                            ffs.writeFileSync(tokenPath, JSON.stringify(tokens));
                             oauth2Client.credentials = tokens;
                             resolve(oauth2Client);
                         }
@@ -121,6 +125,23 @@ async function getDocument(id: string) {
 exports.getDocument = getDocument;
 
 /**
+ * Export a file from Google Drive
+ * @param {string} id The ID of the file to export
+ * @param {string} mimeType The MIME type to export as
+ */
+async function exportDocument(id: string, mimeType: string) {
+    docId = id;
+    authenticate()
+        .then((client) => {
+            exportDocumentWithAuth(client, mimeType);
+        })
+        .catch((err) => {
+            deleteTokenError();
+        })
+}
+exports.exportDocument = exportDocument;
+
+/**
  * Connect to Google Docs API, retrieve the document
  * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
  */
@@ -136,9 +157,34 @@ async function getDocumentWithAuth(auth) {
         params,
         (err, res) => {
             if (err) {
+                console.error('Google Docs API error:', err.message || err);
                 deleteTokenError();
             }
             main.output(res.data);
+        });
+}
+
+/**
+ * Connect to Google Drive API, export the document
+ * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
+ * @param {string} mimeType The MIME type to export as
+ */
+async function exportDocumentWithAuth(auth, mimeType) {
+    if (process.env.NODE_ENV === 'test') return;
+    const drive = google.drive({
+        version: 'v3',
+        auth: auth,
+    });
+    if (docId === null) throw new Error('docId was never set.');
+    const params = { fileId: docId, mimeType: mimeType };
+    drive.files.export(
+        params,
+        (err, res) => {
+            if (err) {
+                console.error('Google Drive API error:', err.message || err);
+                deleteTokenError();
+            }
+            console.log(res.data);
         });
 }
 
